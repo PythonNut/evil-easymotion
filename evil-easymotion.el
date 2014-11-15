@@ -1,11 +1,12 @@
-
-;; (eval-when-compile (require 'cl))
-
+(require 'cl-lib)
 (eval-when-compile
   (progn
+    (require 'names)
     (require 'noflet)
+    (require 'cl-lib)
     (require 'ace-jump-mode)
     (require 'evil)))
+
 
 (defmacro ace-generic (collector &rest follower)
   "ace jump to candidates of collector using follower."
@@ -23,6 +24,7 @@
      (ace-jump-do "")))
 
 (defmacro ace-motion-collect (func)
+  "Repeatedly execute func, and collect the cursor positions into a list"
   `(noflet ((execute-motion ()
               (setq
                 last-command ',func
@@ -39,6 +41,13 @@
          (while (when (and
                         (> (1+ (point)) win-start)
                         (< (1+ (point)) win-end)
+                        ;; TODO: fix this
+                        ;; unfortunately, ace-jump does not have
+                        ;; a way to dictate where the letter folding
+                        ;; occurs. Without this, it will occur at
+                        ;; locations close to the cursor, which
+                        ;; is annoying because those locations
+                        ;; are the ones most often moved to.
                         (< count (length ace-jump-mode-move-keys)))
                   (push (1+ (point)) points)
                   (setq count (1+ count))
@@ -48,6 +57,7 @@
          (nreverse points)))))
 
 (defmacro ace-motion (func)
+  "Automatically define an evil motion for func, naming it ace-func"
   `(evil-define-motion ,(make-symbol (concat "ace-" (symbol-name func))) (count)
      (evil-without-repeat
        (let ((pnt (point))
