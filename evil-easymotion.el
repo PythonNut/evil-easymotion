@@ -88,14 +88,13 @@
   "Automatically define an evil motion for func, naming it ace-func"
   `(evil-define-motion ,(make-symbol (concat "ace-" (symbol-name func))) (count)
      (evil-without-repeat
-       (let ((pnt (point))
-              (buf (current-buffer)))
+       (let ((old-point (point)))
          (evil-enclose-ace-jump-for-motion
            (evil-easymotion-generic
              (evil-easymotion-collect ,func)
              ()))
-         (when (and (equal buf (current-buffer))
-                 (< (point) pnt))
+         ;; handle the off-by-one case
+         (when (< (point) old-point)
            (setq evil-this-type 'exclusive))))))
 
 (defmacro evil-easymotion-define (key motion)
