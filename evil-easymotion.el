@@ -64,7 +64,8 @@
             (smooth-scroll-margin 0)
             (scroll-margin 0)
 
-            (win-start (window-start)))
+            (win-start (window-start))
+            (win-end (window-end)))
        (save-excursion
          (execute-motion)
          (while (when (and
