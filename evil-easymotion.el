@@ -60,10 +60,12 @@
               (call-interactively ',func)))
      (let ((points ())
             (count 0)
+
+            ;; make sure the motion doesn't move the window
             (smooth-scroll-margin 0)
             (scroll-margin 0)
-            (win-start (window-start))
-            (win-end (window-end)))
+
+            (win-start (window-start)))
        (save-excursion
          (execute-motion)
          (while (when (and
