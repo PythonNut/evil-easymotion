@@ -30,7 +30,6 @@
 (require 'cl-lib)
 (eval-when-compile
   (progn
-    (require 'names)
     (require 'noflet)
     (require 'ace-jump-mode)
     (require 'evil)))
