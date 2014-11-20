@@ -36,7 +36,7 @@
     (require 'evil)))
 
 
-(defmacro evil-easymotion-generic (collector &rest follower)
+(defmacro evil-em-generic (collector &rest follower)
   "ace jump to candidates of collector using follower."
   (declare (indent 1))
   `(noflet ((ace-jump-search-candidate (str va-list)
@@ -51,7 +51,7 @@
                ,@follower)))
      (ace-jump-do "")))
 
-(defmacro evil-easymotion-collect (func)
+(defmacro evil-em-collect (func)
   "Repeatedly execute func, and collect the cursor positions into a list"
   `(noflet ((execute-motion ()
               (setq
@@ -84,57 +84,60 @@
          (set-window-start (selected-window) win-start)
          (nreverse points)))))
 
-(defmacro evil-easymotion-make-motion (func)
+(defmacro evil-em-make-motion (func)
   "Automatically define an evil motion for func, naming it ace-func"
-  `(evil-define-motion ,(make-symbol (concat "ace-" (symbol-name func))) (count)
+  `(evil-define-motion ,(make-symbol
+                          (concat
+                            "evil-em-motion-"
+                            (symbol-name func))) (count)
      (evil-without-repeat
        (let ((old-point (point)))
          (evil-enclose-ace-jump-for-motion
-           (evil-easymotion-generic
-             (evil-easymotion-collect ,func)
+           (evil-em-generic
+             (evil-em-collect ,func)
              ()))
          ;; handle the off-by-one case
          (when (< (point) old-point)
            (setq evil-this-type 'exclusive))))))
 
-(defmacro evil-easymotion-define (key motion)
+(defmacro evil-em-define (key motion)
   `(define-key evil-motion-state-map
-     ,key (evil-easymotion-make-motion ,motion)))
+     ,key (evil-em-make-motion ,motion)))
 
 (define-key evil-motion-state-map (kbd "SPC") 'nil)
 
 (defun default-keybindings (prefix)
   (noflet ((kbd-pfx (key)
              (kbd (concat prefix " " key))))
-    (evil-easymotion-define (kbd-pfx "w") evil-forward-word-begin)
-    (evil-easymotion-define (kbd-pfx "W") evil-forward-WORD-begin)
-    (evil-easymotion-define (kbd-pfx "e") evil-forward-word-end)
-    (evil-easymotion-define (kbd-pfx "E") evil-forward-WORD-end)
-    (evil-easymotion-define (kbd-pfx "b") evil-backward-word-begin)
-    (evil-easymotion-define (kbd-pfx "B") evil-backward-WORD-begin)
-    (evil-easymotion-define (kbd-pfx "ge") evil-backward-word-end)
-    (evil-easymotion-define (kbd-pfx "gE") evil-backward-WORD-end)
+    (evil-em-define (kbd-pfx "w") evil-forward-word-begin)
+    (evil-em-define (kbd-pfx "W") evil-forward-WORD-begin)
+    (evil-em-define (kbd-pfx "e") evil-forward-word-end)
+    (evil-em-define (kbd-pfx "E") evil-forward-WORD-end)
+    (evil-em-define (kbd-pfx "b") evil-backward-word-begin)
+    (evil-em-define (kbd-pfx "B") evil-backward-WORD-begin)
+    (evil-em-define (kbd-pfx "ge") evil-backward-word-end)
+    (evil-em-define (kbd-pfx "gE") evil-backward-WORD-end)
 
-    (evil-easymotion-define (kbd-pfx "h") evil-backward-char)
-    (evil-easymotion-define (kbd-pfx "j") next-line)
-    (evil-easymotion-define (kbd-pfx "k") previous-line)
-    (evil-easymotion-define (kbd-pfx "l") evil-forward-char)
+    (evil-em-define (kbd-pfx "h") evil-backward-char)
+    (evil-em-define (kbd-pfx "j") next-line)
+    (evil-em-define (kbd-pfx "k") previous-line)
+    (evil-em-define (kbd-pfx "l") evil-forward-char)
 
-    (evil-easymotion-define (kbd-pfx "g j") next-line)
-    (evil-easymotion-define (kbd-pfx "g k") previous-line)
+    (evil-em-define (kbd-pfx "g j") next-line)
+    (evil-em-define (kbd-pfx "g k") previous-line)
 
-    (evil-easymotion-define (kbd-pfx "[[") evil-backward-section-begin)
-    (evil-easymotion-define (kbd-pfx "[]") evil-backward-section-end)
-    (evil-easymotion-define (kbd-pfx "]]") evil-forward-section-begin)
-    (evil-easymotion-define (kbd-pfx "][") evil-forward-section-end)
+    (evil-em-define (kbd-pfx "[[") evil-backward-section-begin)
+    (evil-em-define (kbd-pfx "[]") evil-backward-section-end)
+    (evil-em-define (kbd-pfx "]]") evil-forward-section-begin)
+    (evil-em-define (kbd-pfx "][") evil-forward-section-end)
 
-    (evil-easymotion-define (kbd-pfx "(") evil-forward-sentence)
-    (evil-easymotion-define (kbd-pfx ")") evil-backward-sentence)
+    (evil-em-define (kbd-pfx "(") evil-forward-sentence)
+    (evil-em-define (kbd-pfx ")") evil-backward-sentence)
 
-    (evil-easymotion-define (kbd-pfx "n") evil-search-next)
-    (evil-easymotion-define (kbd-pfx "N") evil-search-previous)
+    (evil-em-define (kbd-pfx "n") evil-search-next)
+    (evil-em-define (kbd-pfx "N") evil-search-previous)
 
-    (evil-easymotion-define (kbd-pfx "-") evil-previous-line-first-non-blank)
-    (evil-easymotion-define (kbd-pfx "+") evil-next-line-first-non-blank)))
+    (evil-em-define (kbd-pfx "-") evil-previous-line-first-non-blank)
+    (evil-em-define (kbd-pfx "+") evil-next-line-first-non-blank)))
 
 ;;; evil-easymotion.el ends here
