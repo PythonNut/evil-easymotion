@@ -120,22 +120,14 @@
     (ease-motion (kbd-pfx "k") previous-line)
     (ease-motion (kbd-pfx "l") evil-forward-char)
 
-    (ease-motion (kbd-pfx "H") evil-backward-symbol)
-    (ease-motion (kbd-pfx "L") evil-forward-symbol)
-
     (ease-motion (kbd-pfx "g j") next-line)
     (ease-motion (kbd-pfx "g k") previous-line)
-
-    (ease-motion (kbd-pfx "s f") evil-forward-sexp)
-    (ease-motion (kbd-pfx "s b") evil-backward-sexp)
 
     (ease-motion (kbd-pfx "[[") evil-backward-section-begin)
     (ease-motion (kbd-pfx "[]") evil-backward-section-end)
     (ease-motion (kbd-pfx "]]") evil-forward-section-begin)
     (ease-motion (kbd-pfx "][") evil-forward-section-end)
 
-    (ease-motion (kbd-pfx "L") evil-forward-symbol)
-    (ease-motion (kbd-pfx "H") evil-backward-symbol)
     (ease-motion (kbd-pfx "(") evil-forward-sentence)
     (ease-motion (kbd-pfx ")") evil-backward-sentence)
 
@@ -143,21 +135,6 @@
     (ease-motion (kbd-pfx "N") evil-search-previous)
 
     (ease-motion (kbd-pfx "-") evil-previous-line-first-non-blank)
-    (ease-motion (kbd-pfx "+") evil-next-line-first-non-blank)
-
-    (ease-motion (kbd-pfx "M-h") evil-backward-sexp)
-    (ease-motion (kbd-pfx "M-h") evil-backward-sexp)
-    (ease-motion (kbd-pfx "M-j") evil-enter-sexp)
-    (ease-motion (kbd-pfx "M-k") evil-backward-up-sexp)
-    (ease-motion (kbd-pfx "M-l") evil-forward-sexp)
-
-    (ease-motion (kbd-pfx "s f") evil-forward-sexp)
-    (ease-motion (kbd-pfx "s b") evil-backward-sexp)
-    (ease-motion (kbd-pfx "s d") evil-down-sexp)
-    (ease-motion (kbd-pfx "s D") evil-backward-down-sexp)
-    (ease-motion (kbd-pfx "s e") evil-up-sexp)
-    (ease-motion (kbd-pfx "s U") evil-backward-up-sexp)
-    (ease-motion (kbd-pfx "s n") evil-next-sexp)
-    (ease-motion (kbd-pfx "s p") evil-previous-sexp)))
+    (ease-motion (kbd-pfx "+") evil-next-line-first-non-blank)))
 
 ;;; evil-easymotion.el ends here
