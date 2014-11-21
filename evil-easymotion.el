@@ -86,7 +86,7 @@
          (set-window-start (selected-window) win-start)
          (nreverse points)))))
 
-(defmacro evilem-make-motion (func &optional pre-hook post-hook)
+(defmacro evilem-make-motion (func &optional pre-hook post-hook vars)
   "Automatically define an evil motion for func, naming it ace-func"
   `(evil-define-motion ,(make-symbol
                           (concat
@@ -94,8 +94,8 @@
                             (symbol-name func))) (count)
      (evil-without-repeat
        ,(when pre-hook
-          `(call-interactively ,pre-hook))
-       (let ((old-point (point)))
+          `(funcall ,pre-hook))
+       (let ,(append '((old-point (point))) vars)
          (evil-enclose-ace-jump-for-motion
            (evilem-generic
              (evilem-collect ,func)
@@ -104,11 +104,11 @@
          (when (< (point) old-point)
            (setq evil-this-type 'exclusive)))
        ,(when post-hook
-          `(call-interactively ,post-hook)))))
+          `(funcall ,post-hook)))))
 
-(defmacro evilem-define (key motion &optional pre-hook post-hook)
+(defmacro evilem-define (key motion &optional pre-hook post-hook vars)
   `(define-key evil-motion-state-map ,key
-     (evilem-make-motion ,motion ,pre-hook ,post-hook)))
+     (evilem-make-motion ,motion ,pre-hook ,post-hook ,vars)))
 
 (define-key evil-motion-state-map (kbd "SPC") 'nil)
 
