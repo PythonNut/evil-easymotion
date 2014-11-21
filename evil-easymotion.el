@@ -93,6 +93,8 @@
                             "evilem-motion-"
                             (symbol-name func))) (count)
      (evil-without-repeat
+       ,(when pre-hook
+          `(call-interactively ,pre-hook))
        (let ((old-point (point)))
          (evil-enclose-ace-jump-for-motion
            (evilem-generic
@@ -100,11 +102,13 @@
              ()))
          ;; handle the off-by-one case
          (when (< (point) old-point)
-           (setq evil-this-type 'exclusive))))))
+           (setq evil-this-type 'exclusive)))
+       ,(when post-hook
+          `(call-interactively ,post-hook)))))
 
-  `(define-key evil-motion-state-map
-     ,key (evil-em-make-motion ,motion)))
 (defmacro evilem-define (key motion &optional pre-hook post-hook)
+  `(define-key evil-motion-state-map ,key
+     (evilem-make-motion ,motion ,pre-hook ,post-hook)))
 
 (define-key evil-motion-state-map (kbd "SPC") 'nil)
 
