@@ -134,27 +134,35 @@
 
     (evilem-define (kbd-pfx "t") evil-repeat-find-char
       (lambda ()
-        (interactive)
         (save-excursion
-          (call-interactively 'evil-find-char-to))))
+          (let ((evil-cross-lines t))
+            (call-interactively 'evil-find-char-to))))
+      nil
+      ((evil-cross-lines t)))
 
     (evilem-define (kbd-pfx "T") evil-repeat-find-char
       (lambda ()
-        (interactive)
         (save-excursion
-          (call-interactively 'evil-find-char-to-backward))))
+          (let ((evil-cross-lines t))
+            (call-interactively 'evil-find-char-to-backward))))
+      nil
+      ((evil-cross-lines t)))
 
     (evilem-define (kbd-pfx "f") evil-repeat-find-char
       (lambda ()
-        (interactive)
         (save-excursion
-          (call-interactively 'evil-find-char))))
+          (let ((evil-cross-lines t))
+            (call-interactively 'evil-find-char))))
+      nil
+      ((evil-cross-lines t)))
 
     (evilem-define (kbd-pfx "F") evil-repeat-find-char
       (lambda ()
-        (interactive)
         (save-excursion
-          (call-interactively 'evil-find-char-backward))))
+          (let ((evil-cross-lines t))
+            (call-interactively 'evil-find-char-backward))))
+      nil
+      ((evil-cross-lines t)))
 
     (evilem-define (kbd-pfx "[[") evil-backward-section-begin)
     (evilem-define (kbd-pfx "[]") evil-backward-section-end)
