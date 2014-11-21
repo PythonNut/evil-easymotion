@@ -131,6 +131,31 @@
 
     (evilem-define (kbd-pfx "g j") next-line)
     (evilem-define (kbd-pfx "g k") previous-line)
+
+    (evilem-define (kbd-pfx "t") evil-repeat-find-char
+      (lambda ()
+        (interactive)
+        (save-excursion
+          (call-interactively 'evil-find-char-to))))
+
+    (evilem-define (kbd-pfx "T") evil-repeat-find-char
+      (lambda ()
+        (interactive)
+        (save-excursion
+          (call-interactively 'evil-find-char-to-backward))))
+
+    (evilem-define (kbd-pfx "f") evil-repeat-find-char
+      (lambda ()
+        (interactive)
+        (save-excursion
+          (call-interactively 'evil-find-char))))
+
+    (evilem-define (kbd-pfx "F") evil-repeat-find-char
+      (lambda ()
+        (interactive)
+        (save-excursion
+          (call-interactively 'evil-find-char-backward))))
+
     (evilem-define (kbd-pfx "[[") evil-backward-section-begin)
     (evilem-define (kbd-pfx "[]") evil-backward-section-end)
     (evilem-define (kbd-pfx "]]") evil-forward-section-begin)
