@@ -69,7 +69,7 @@
        (save-excursion
          (execute-motion)
          (while (when (and
-                        (> (1+ (point)) win-start)
+                        (>= (point) win-start)
                         (< (1+ (point)) win-end)
                         ;; TODO: fix this
                         ;; unfortunately, ace-jump does not have
@@ -81,8 +81,8 @@
                         (< count (length ace-jump-mode-move-keys)))
                   (push (1+ (point)) points)
                   (setq count (1+ count))
-                  (execute-motion)
-                  t))
+                  (ignore-errors (execute-motion))
+                  (not (memq (point) (butlast points)))))
          (set-window-start (selected-window) win-start)
          (nreverse points)))))
 
