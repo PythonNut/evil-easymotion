@@ -128,14 +128,10 @@
     (evilem-define (kbd-pfx "l") evil-forward-char)
 
     (evilem-define (kbd-pfx "j") next-line
-      (lambda ()
-        (call-interactively 'next-line)
-        (call-interactively 'previous-line)))
+      nil nil ((temporary-goal-column (current-column))))
 
     (evilem-define (kbd-pfx "k") previous-line
-      (lambda ()
-        (call-interactively 'previous-line)
-        (call-interactively 'next-line)))
+      nil nil ((temporary-goal-column (current-column))))
 
     (evilem-define (kbd-pfx "g j") next-line)
     (evilem-define (kbd-pfx "g k") previous-line)
