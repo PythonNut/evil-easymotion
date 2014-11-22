@@ -35,7 +35,7 @@
     (require 'evil)))
 
 
-(defmacro evilem-generic (collector &rest follower)
+(defmacro evilem-generic (collector)
   "ace jump to candidates of collector using follower."
   (declare (indent 1))
   `(noflet ((ace-jump-search-candidate (str va-list)
@@ -44,10 +44,6 @@
                           :offset (1- x)
                           :visual-area (car va-list)))
                 ,collector)))
-     (setq ace-jump-mode-end-hook
-       (list (lambda ()
-               (setq ace-jump-mode-end-hook)
-               ,@follower)))
      (ace-jump-do "")))
 
 (defmacro evilem-collect (func)
@@ -97,9 +93,7 @@
           `(funcall ,pre-hook))
        (let ,(append '((old-point (point))) vars)
          (evil-enclose-ace-jump-for-motion
-           (evilem-generic
-             (evilem-collect ,func)
-             ()))
+           (evilem-generic (evilem-collect ,func)))
          ;; handle the off-by-one case
          (when (< (point) old-point)
            (setq evil-this-type 'exclusive)))
