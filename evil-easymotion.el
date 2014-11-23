@@ -78,7 +78,7 @@
                   (push (1+ (point)) points)
                   (setq count (1+ count))
                   (ignore-errors (execute-motion))
-                  (not (memq (point) (butlast points)))))
+                  t))
          (set-window-start (selected-window) win-start)
          (nreverse points)))))
 
