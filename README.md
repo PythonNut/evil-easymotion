@@ -17,3 +17,7 @@ To define easymotions for all motions that evil defines by default, add
 This binds all motions under the prefix `SPC` in `evil-motion-state-map`. This is not done by default for motions defined manually. You will need to supply the prefix.
 
 Not all motions can be made easy (`evil-goto-line` for example).
+
+**Obligatory screencast**
+
+![screencast](img/evil-easymotion-demo.gif)
