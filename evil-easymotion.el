@@ -118,14 +118,16 @@
     (evilem-define (kbd-pfx "ge") evil-backward-word-end)
     (evilem-define (kbd-pfx "gE") evil-backward-WORD-end)
 
-    (evilem-define (kbd-pfx "h") evil-backward-char)
+    (evilem-define (kbd-pfx "h") backward-char)
     (evilem-define (kbd-pfx "l") evil-forward-char)
 
     (evilem-define (kbd-pfx "j") next-line
-      nil nil ((temporary-goal-column (current-column))))
+      nil nil ((temporary-goal-column (current-column))
+                (line-move-visual nil)))
 
     (evilem-define (kbd-pfx "k") previous-line
-      nil nil ((temporary-goal-column (current-column))))
+      nil nil ((temporary-goal-column (current-column))
+                (line-move-visual nil)))
 
     (evilem-define (kbd-pfx "g j") next-line)
     (evilem-define (kbd-pfx "g k") previous-line)
