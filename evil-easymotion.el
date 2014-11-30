@@ -3,10 +3,10 @@
 ;; Copyright (C) 2014 PythonNut
 
 ;; Author: PythonNut <pythonnut@pythonnut.com>
-;; Keywords: convenience, evil
+;; Keywords: convenience, evil, movement
 ;; Version: 20141120
 ;; URL: https://github.com/pythonnut/evil-easymotion.el
-;; Package-Requires: ((emacs "24") (evil "20141119.205") (cl-lib "0.5") (ace-jump-mode "20140616.115"))
+;; Package-Requires: ((emacs "24") (cl-lib "0.5") (ace-jump-mode "20140616.115"))
 
 ;;; License:
 
