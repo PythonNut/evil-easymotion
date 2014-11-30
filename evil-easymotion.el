@@ -206,6 +206,8 @@
 
     (evilem-define (kbd-pfx "n") evil-search-next)
     (evilem-define (kbd-pfx "N") evil-search-previous)
+    (evilem-define (kbd-pfx "*") evil-search-word-forward)
+    (evilem-define (kbd-pfx "#") evil-search-word-backward)
 
     (evilem-define (kbd-pfx "-") evil-previous-line-first-non-blank)
     (evilem-define (kbd-pfx "+") evil-next-line-first-non-blank)))
