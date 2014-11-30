@@ -130,9 +130,8 @@
   `(define-key evil-motion-state-map ,key
      (evilem-make-motion ,motion ,pre-hook ,post-hook ,vars)))
 
-(define-key evil-motion-state-map (kbd "SPC") 'nil)
-
-(defun default-keybindings (prefix)
+(defun evilem-default-keybindings (prefix)
+  (define-key evil-motion-state-map (kbd prefix) 'nil)
   (noflet ((kbd-pfx (key)
              (kbd (concat prefix " " key))))
     (evilem-define (kbd-pfx "w") evil-forward-word-begin)
