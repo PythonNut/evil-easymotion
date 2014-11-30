@@ -21,3 +21,7 @@ Not all motions can be made easy (`evil-goto-line` for example).
 **Obligatory screencast**
 
 ![screencast](img/evil-easymotion-demo.gif)
+
+Credits
+=======
+I'm deeply indebted to [abo-abo](https://github.com/abo-abo/) for authoring [abo-abo/**ace-link**](https://github.com/abo-abo/ace-link/), which inspired this package. In particular, the function `ali-generic` which allows `ace-jump-mode` to jump to arbitrary points.
