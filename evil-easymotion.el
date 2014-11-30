@@ -58,8 +58,7 @@
 (eval-when-compile
   (progn
     (require 'noflet)
-    (require 'ace-jump-mode)
-    (require 'evil)))
+    (require 'ace-jump-mode)))
 
 
 (defmacro evilem-generic (collector)
