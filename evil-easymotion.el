@@ -156,8 +156,13 @@
       nil nil ((temporary-goal-column (current-column))
                 (line-move-visual nil)))
 
-    (evilem-define (kbd-pfx "g j") next-line)
-    (evilem-define (kbd-pfx "g k") previous-line)
+    (evilem-define (kbd-pfx "g j") next-line
+      nil nil ((temporary-goal-column (current-column))
+                (line-move-visual t)))
+
+    (evilem-define (kbd-pfx "g k") previous-line
+      nil nil ((temporary-goal-column (current-column))
+                (line-move-visual t)))
 
     (evilem-define (kbd-pfx "t") evil-repeat-find-char
       (lambda ()
