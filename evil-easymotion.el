@@ -53,6 +53,8 @@
 
 ;; This binds all motions under the prefix `SPC` in `evil-motion-state-map`. This is not done by default for motions defined manually. You will need to supply the prefix.
 
+;; More advanced use-cases are detailed in the github README.
+
 ;;; Code:
 (require 'cl-lib)
 (eval-when-compile
