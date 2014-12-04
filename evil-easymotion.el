@@ -128,9 +128,27 @@
        ,(when post-hook
           `(funcall ,post-hook)))))
 
+(defmacro evilem-make-motion-plain (func &optional pre-hook post-hook vars)
+  "Automatically define an evil motion for func, naming it ace-func"
+  `(defun ,(make-symbol
+             (concat
+               "evilem-motion-"
+               (symbol-name func))) ()
+     (interactive)
+     ,(when pre-hook
+        `(funcall ,pre-hook))
+     (let ,(append '((old-point (point))) vars)
+       (evilem-generic (evilem-collect ,func)))
+     ,(when post-hook
+        `(funcall ,post-hook))))
+
 (defmacro evilem-define (key motion &optional pre-hook post-hook vars)
   `(define-key evil-motion-state-map ,key
      (evilem-make-motion ,motion ,pre-hook ,post-hook ,vars)))
+
+(defmacro evilem-define-plain (key motion &optional pre-hook post-hook vars)
+  `(global-set-key ,key
+     (evilem-make-motion-plain ,motion ,pre-hook ,post-hook ,vars)))
 
 (defun evilem-default-keybindings (prefix)
   (define-key evil-motion-state-map (kbd prefix) 'nil)
