@@ -110,12 +110,9 @@
          (set-window-start (selected-window) win-start)
          (nreverse points)))))
 
-(defmacro evilem-make-motion (func &optional pre-hook post-hook vars)
+(defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil motion for func, naming it ace-func"
-  `(evil-define-motion ,(make-symbol
-                          (concat
-                            "evilem-motion-"
-                            (symbol-name func))) (count)
+  `(evil-define-motion ,name (count)
      (evil-without-repeat
        ,(when pre-hook
           `(funcall ,pre-hook))
@@ -128,12 +125,9 @@
        ,(when post-hook
           `(funcall ,post-hook)))))
 
-(defmacro evilem-make-motion-plain (func &optional pre-hook post-hook vars)
+(defmacro evilem-make-motion-plain (name func &optional pre-hook post-hook vars)
   "Automatically define an evil motion for func, naming it ace-func"
-  `(defun ,(make-symbol
-             (concat
-               "evilem-motion-"
-               (symbol-name func))) ()
+  `(defun ,name ()
      (interactive)
      ,(when pre-hook
         `(funcall ,pre-hook))
@@ -144,11 +138,19 @@
 
 (defmacro evilem-define (key motion &optional pre-hook post-hook vars)
   `(define-key evil-motion-state-map ,key
-     (evilem-make-motion ,motion ,pre-hook ,post-hook ,vars)))
+     (evilem-make-motion ,(make-symbol
+                            (concat
+                              "evilem-motion-"
+                              (symbol-name motion)))
+       ,motion ,pre-hook ,post-hook ,vars)))
 
 (defmacro evilem-define-plain (key motion &optional pre-hook post-hook vars)
   `(global-set-key ,key
-     (evilem-make-motion-plain ,motion ,pre-hook ,post-hook ,vars)))
+     (evilem-make-motion-plain ,(make-symbol
+                                  (concat
+                                    "evilem-motion-"
+                                    (symbol-name motion)))
+       ,motion ,pre-hook ,post-hook ,vars)))
 
 (defun evilem-default-keybindings (prefix)
   (define-key evil-motion-state-map (kbd prefix) 'nil)
