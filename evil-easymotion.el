@@ -210,4 +210,5 @@
     (evilem-define (kbd-pfx "-") evil-previous-line-first-non-blank)
     (evilem-define (kbd-pfx "+") evil-next-line-first-non-blank)))
 
+(provide 'evil-easymotion)
 ;;; evil-easymotion.el ends here
