@@ -85,9 +85,9 @@
   "Repeatedly execute func, and collect the cursor positions into a list"
   `(noflet ((execute-motion ()
               (setq
-                last-command ',func
-                this-command ',func)
-              (call-interactively ',func)))
+                last-command ,func
+                this-command ,func)
+              (call-interactively ,func)))
      (let ((points ())
             (count 0)
 
@@ -146,24 +146,24 @@
 (defmacro evilem-define (key motion &optional pre-hook post-hook vars)
   "Automatically create and bind an evil motion"
   `(define-key evil-motion-state-map ,key
-     (evilem-make-motion ,(make-symbol
-                            (concat
-                              "evilem-motion-"
-                              (symbol-name
-                                (evilem-unquote motion))))
-       ,(evilem-unquote motion)
-       ,pre-hook ,post-hook ,vars)))
+     (evilem-make-motion
+       ,(make-symbol
+          (concat
+            "evilem-motion-"
+            (symbol-name
+              (evilem-unquote motion))))
+       ,motion ,pre-hook ,post-hook ,vars)))
 
 (defmacro evilem-define-plain (key motion &optional pre-hook post-hook vars)
   "Automatically create and bind a plain emacs motion"
   `(global-set-key ,key
-     (evilem-make-motion-plain ,(make-symbol
-                                  (concat
-                                    "evilem-motion-"
-                                    (symbol-name
-                                      (evilem-unquote motion))))
-       ,(evilem-unquote motion)
-       ,pre-hook ,post-hook ,vars)))
+     (evilem-make-motion-plain
+       ,(make-symbol
+          (concat
+            "evilem-motion-"
+            (symbol-name
+              (evilem-unquote motion))))
+       ,motion ,pre-hook ,post-hook ,vars)))
 
 (defun evilem-default-keybindings (prefix)
   "Define easymotions for all motions evil defines by default"
