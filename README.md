@@ -13,7 +13,7 @@ Usage
 Currently most motions are supported, and it's easy to define your own easymotions.
 
 ```emacs
-(evilem-define (kbd "SPC w") evil-forward-word-begin)
+(evilem-define (kbd "SPC w") 'evil-forward-word-begin)
 ```
 To define easymotions for all motions that evil defines by default, add
 ```emacs
