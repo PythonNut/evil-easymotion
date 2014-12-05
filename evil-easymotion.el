@@ -143,6 +143,7 @@
      ,(when post-hook
         `(funcall ,post-hook))))
 
+;;;###autoload
 (defmacro evilem-define (key motion &optional pre-hook post-hook vars)
   "Automatically create and bind an evil motion"
   `(define-key evil-motion-state-map ,key
@@ -154,6 +155,7 @@
               (evilem-unquote motion))))
        ,motion ,pre-hook ,post-hook ,vars)))
 
+;;;###autoload
 (defmacro evilem-define-plain (key motion &optional pre-hook post-hook vars)
   "Automatically create and bind a plain emacs motion"
   `(global-set-key ,key
@@ -165,6 +167,7 @@
               (evilem-unquote motion))))
        ,motion ,pre-hook ,post-hook ,vars)))
 
+;;;###autoload
 (defun evilem-default-keybindings (prefix)
   "Define easymotions for all motions evil defines by default"
   (define-key evil-motion-state-map (kbd prefix) 'nil)
