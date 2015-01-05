@@ -30,4 +30,7 @@ If you want to access the motions in other evil states, you can easily use a red
 
 Credits
 =======
-I'm deeply indebted to [abo-abo](https://github.com/abo-abo/) for authoring [abo-abo/**ace-link**](https://github.com/abo-abo/ace-link/), which inspired this package. In particular, the function `ali-generic` which allows `ace-jump-mode` to jump to arbitrary points.
+I'm deeply indebted to:
+* [abo-abo](https://github.com/abo-abo/) for authoring [`ace-link`](https://github.com/abo-abo/ace-link/), which inspired this package. In particular, the function `ali-generic` which allows `ace-jump-mode` to jump to arbitrary points.
+* [winterTTR](https://github.com/winterTTr) for authoring [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode), on which this package depends.
+* [Lokaltog](https://github.com/Lokaltog) for authoring [`vim-easymotion`](https://github.com/Lokaltog/vim-easymotion) and creating the paradigm which this package emulates.
