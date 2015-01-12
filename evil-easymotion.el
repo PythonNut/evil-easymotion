@@ -73,7 +73,7 @@
   `(noflet ((ace-jump-search-candidate (str va-list)
               (mapcar (lambda (x)
                         (make-aj-position
-                          :offset (1- x)
+                          :offset x
                           :visual-area (car va-list)))
                 ,collector)))
      (ace-jump-do "")))
@@ -85,7 +85,7 @@
                 last-command ,func
                 this-command ,func)
               (call-interactively ,func)))
-     (let ((points ())
+     (let ((points)
             (count 0)
 
             ;; make sure the motion doesn't move the window
@@ -98,47 +98,45 @@
          (with-no-warnings (execute-motion))
          (while (when (and
                         (>= (point) win-start)
-                        (< (1+ (point)) win-end)
-                        ;; TODO: fix this
-                        ;; unfortunately, ace-jump does not have
-                        ;; a way to dictate where the letter folding
-                        ;; occurs. Without this, it will occur at
-                        ;; locations close to the cursor, which
-                        ;; is annoying because those locations
-                        ;; are the ones most often moved to.
-                        (< count (length ace-jump-mode-move-keys)))
-                  (push (1+ (point)) points)
+                        (<= (point) win-end))
+                  (push (point) points)
                   (setq count (1+ count))
                   (ignore-errors (execute-motion))
                   t))
          (set-window-start (selected-window) win-start)
-         (nreverse points)))))
+         (let ((list-length (length ace-jump-mode-move-keys)))
+           (setq ace-jump-mode-move-keys
+             (reverse (butlast ace-jump-mode-move-keys
+                        (- list-length (min list-length count))))))
+         points))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(evil-define-motion ,name (count)
-     (evil-without-repeat
-       ,(when pre-hook
-          `(funcall ,pre-hook))
-       (let ,(append '((old-point (point))) vars)
-         (evil-enclose-ace-jump-for-motion
-           (evilem-generic (evilem-collect ,func)))
-         ;; handle the off-by-one case
-         (when (< (point) old-point)
-           (setq evil-this-type 'exclusive)))
-       ,(when post-hook
-          `(funcall ,post-hook)))))
+     (cl-letf ((ace-jump-mode-move-keys))
+       (evil-without-repeat
+         ,(when pre-hook
+            `(funcall ,pre-hook))
+         (let ,(append '((old-point (point))) vars)
+           (evil-enclose-ace-jump-for-motion
+             (evilem-generic (evilem-collect ,func)))
+           ;; handle the off-by-one case
+           (when (< (point) old-point)
+             (setq evil-this-type 'exclusive)))
+         ,(when post-hook
+            `(funcall ,post-hook))))))
 
 (defmacro evilem-make-motion-plain (name func &optional pre-hook post-hook vars)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
-     ,(when pre-hook
-        `(funcall ,pre-hook))
-     (let ,(append '((old-point (point))) vars)
-       (evilem-generic (evilem-collect ,func)))
-     ,(when post-hook
-        `(funcall ,post-hook))))
+     (cl-letf ((ace-jump-mode-move-keys))
+       ,(when pre-hook
+          `(funcall ,pre-hook))
+       (let ,(append '((old-point (point))) vars)
+         (evilem-generic (evilem-collect ,func)))
+       ,(when post-hook
+          `(funcall ,post-hook)))))
 
 (defmacro evilem-create (motion &optional pre-hook post-hook vars)
   `(evilem-make-motion
