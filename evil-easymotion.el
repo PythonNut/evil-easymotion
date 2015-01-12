@@ -91,15 +91,14 @@
 
             ;; make sure the motion doesn't move the window
             (smooth-scroll-margin 0)
-            (scroll-margin 0)
-
-            (win-start (window-start))
-            (win-end (window-end)))
+            (scroll-margin 0))
        (save-excursion
          (with-no-warnings (execute-motion))
          (while (and
-                  (>= (point) win-start)
-                  (<= (point) win-end)
+                  (>= (point) (window-start))
+                  (<= (point) (window-end))
+                  (not (eobp))
+                  (not (bobp))
                   (< duplicate-count 10))
            (if (memq (point) points)
              (setq duplicate-count (1+ duplicate-count))
@@ -107,7 +106,6 @@
              (setq duplicate-count 0))
            (setq count (1+ count))
            (ignore-errors (execute-motion)))
-         (set-window-start (selected-window) win-start)
          (let ((list-length (length ace-jump-mode-move-keys)))
            (setq ace-jump-mode-move-keys
              (reverse (butlast ace-jump-mode-move-keys
@@ -181,9 +179,6 @@
       (evilem-define (kbd-pfx "B") 'evil-backward-WORD-begin)
       (evilem-define (kbd-pfx "ge") 'evil-backward-word-end)
       (evilem-define (kbd-pfx "gE") 'evil-backward-WORD-end)
-
-      (evilem-define (kbd-pfx "h") 'backward-char)
-      (evilem-define (kbd-pfx "l") 'evil-forward-char)
 
       (evilem-define (kbd-pfx "j") 'next-line
         nil nil ((temporary-goal-column (current-column))
