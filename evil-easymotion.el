@@ -143,29 +143,29 @@
      ,(when post-hook
         `(funcall ,post-hook))))
 
+(defmacro evilem-create (motion &optional pre-hook post-hook vars)
+  `(evilem-make-motion
+     ,(make-symbol
+        (concat "evilem-motion-" (symbol-name (evilem-unquote motion))))
+     ,motion ,pre-hook ,post-hook ,vars))
+
+(defmacro evilem-create-plain (motion &optional pre-hook post-hook vars)
+  `(evilem-make-motion-plain
+     ,(make-symbol
+        (concat "evilem-motion-" (symbol-name (evilem-unquote motion))))
+     ,motion ,pre-hook ,post-hook ,vars))
+
 ;;;###autoload
 (defmacro evilem-define (key motion &optional pre-hook post-hook vars)
   "Automatically create and bind an evil motion"
   `(define-key evil-motion-state-map ,key
-     (evilem-make-motion
-       ,(make-symbol
-          (concat
-            "evilem-motion-"
-            (symbol-name
-              (evilem-unquote motion))))
-       ,motion ,pre-hook ,post-hook ,vars)))
+     (evilem-create ,motion ,pre-hook ,post-hook ,vars)))
 
 ;;;###autoload
 (defmacro evilem-define-plain (key motion &optional pre-hook post-hook vars)
   "Automatically create and bind a plain emacs motion"
   `(global-set-key ,key
-     (evilem-make-motion-plain
-       ,(make-symbol
-          (concat
-            "evilem-motion-"
-            (symbol-name
-              (evilem-unquote motion))))
-       ,motion ,pre-hook ,post-hook ,vars)))
+     (evilem-create-plain ,motion ,pre-hook ,post-hook ,vars)))
 
 ;;;###autoload
 (defun evilem-default-keybindings (prefix)
