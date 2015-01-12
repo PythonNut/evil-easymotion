@@ -57,11 +57,8 @@
 
 ;;; Code:
 (require 'cl-lib)
-(eval-when-compile
-  (progn
-    (require 'noflet)
-    (require 'ace-jump-mode)))
-
+(require 'noflet)
+(require 'ace-jump-mode)
 
 ;; macro helper, from evil source
 (defun evilem-unquote (exp)
@@ -98,7 +95,7 @@
             (win-start (window-start))
             (win-end (window-end)))
        (save-excursion
-         (execute-motion)
+         (with-no-warnings (execute-motion))
          (while (when (and
                         (>= (point) win-start)
                         (< (1+ (point)) win-end)
@@ -173,81 +170,82 @@
   (define-key evil-motion-state-map (kbd prefix) 'nil)
   (noflet ((kbd-pfx (key)
              (kbd (concat prefix " " key))))
-    (evilem-define (kbd-pfx "w") 'evil-forward-word-begin)
-    (evilem-define (kbd-pfx "W") 'evil-forward-WORD-begin)
-    (evilem-define (kbd-pfx "e") 'evil-forward-word-end)
-    (evilem-define (kbd-pfx "E") 'evil-forward-WORD-end)
-    (evilem-define (kbd-pfx "b") 'evil-backward-word-begin)
-    (evilem-define (kbd-pfx "B") 'evil-backward-WORD-begin)
-    (evilem-define (kbd-pfx "ge") 'evil-backward-word-end)
-    (evilem-define (kbd-pfx "gE") 'evil-backward-WORD-end)
+    (with-no-warnings
+      (evilem-define (kbd-pfx "w") 'evil-forward-word-begin)
+      (evilem-define (kbd-pfx "W") 'evil-forward-WORD-begin)
+      (evilem-define (kbd-pfx "e") 'evil-forward-word-end)
+      (evilem-define (kbd-pfx "E") 'evil-forward-WORD-end)
+      (evilem-define (kbd-pfx "b") 'evil-backward-word-begin)
+      (evilem-define (kbd-pfx "B") 'evil-backward-WORD-begin)
+      (evilem-define (kbd-pfx "ge") 'evil-backward-word-end)
+      (evilem-define (kbd-pfx "gE") 'evil-backward-WORD-end)
 
-    (evilem-define (kbd-pfx "h") 'backward-char)
-    (evilem-define (kbd-pfx "l") 'evil-forward-char)
+      (evilem-define (kbd-pfx "h") 'backward-char)
+      (evilem-define (kbd-pfx "l") 'evil-forward-char)
 
-    (evilem-define (kbd-pfx "j") 'next-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual nil)))
+      (evilem-define (kbd-pfx "j") 'next-line
+        nil nil ((temporary-goal-column (current-column))
+                  (line-move-visual nil)))
 
-    (evilem-define (kbd-pfx "k") 'previous-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual nil)))
+      (evilem-define (kbd-pfx "k") 'previous-line
+        nil nil ((temporary-goal-column (current-column))
+                  (line-move-visual nil)))
 
-    (evilem-define (kbd-pfx "g j") 'next-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual t)))
+      (evilem-define (kbd-pfx "g j") 'next-line
+        nil nil ((temporary-goal-column (current-column))
+                  (line-move-visual t)))
 
-    (evilem-define (kbd-pfx "g k") 'previous-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual t)))
+      (evilem-define (kbd-pfx "g k") 'previous-line
+        nil nil ((temporary-goal-column (current-column))
+                  (line-move-visual t)))
 
-    (evilem-define (kbd-pfx "t") 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char-to))))
-      nil
-      ((evil-cross-lines t)))
+      (evilem-define (kbd-pfx "t") 'evil-repeat-find-char
+        (lambda ()
+          (save-excursion
+            (let ((evil-cross-lines t))
+              (call-interactively 'evil-find-char-to))))
+        nil
+        ((evil-cross-lines t)))
 
-    (evilem-define (kbd-pfx "T") 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char-to-backward))))
-      nil
-      ((evil-cross-lines t)))
+      (evilem-define (kbd-pfx "T") 'evil-repeat-find-char
+        (lambda ()
+          (save-excursion
+            (let ((evil-cross-lines t))
+              (call-interactively 'evil-find-char-to-backward))))
+        nil
+        ((evil-cross-lines t)))
 
-    (evilem-define (kbd-pfx "f") 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char))))
-      nil
-      ((evil-cross-lines t)))
+      (evilem-define (kbd-pfx "f") 'evil-repeat-find-char
+        (lambda ()
+          (save-excursion
+            (let ((evil-cross-lines t))
+              (call-interactively 'evil-find-char))))
+        nil
+        ((evil-cross-lines t)))
 
-    (evilem-define (kbd-pfx "F") 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char-backward))))
-      nil
-      ((evil-cross-lines t)))
+      (evilem-define (kbd-pfx "F") 'evil-repeat-find-char
+        (lambda ()
+          (save-excursion
+            (let ((evil-cross-lines t))
+              (call-interactively 'evil-find-char-backward))))
+        nil
+        ((evil-cross-lines t)))
 
-    (evilem-define (kbd-pfx "[[") 'evil-backward-section-begin)
-    (evilem-define (kbd-pfx "[]") 'evil-backward-section-end)
-    (evilem-define (kbd-pfx "]]") 'evil-forward-section-begin)
-    (evilem-define (kbd-pfx "][") 'evil-forward-section-end)
+      (evilem-define (kbd-pfx "[[") 'evil-backward-section-begin)
+      (evilem-define (kbd-pfx "[]") 'evil-backward-section-end)
+      (evilem-define (kbd-pfx "]]") 'evil-forward-section-begin)
+      (evilem-define (kbd-pfx "][") 'evil-forward-section-end)
 
-    (evilem-define (kbd-pfx "(") 'evil-forward-sentence)
-    (evilem-define (kbd-pfx ")") 'evil-backward-sentence)
+      (evilem-define (kbd-pfx "(") 'evil-forward-sentence)
+      (evilem-define (kbd-pfx ")") 'evil-backward-sentence)
 
-    (evilem-define (kbd-pfx "n") 'evil-search-next)
-    (evilem-define (kbd-pfx "N") 'evil-search-previous)
-    (evilem-define (kbd-pfx "*") 'evil-search-word-forward)
-    (evilem-define (kbd-pfx "#") 'evil-search-word-backward)
+      (evilem-define (kbd-pfx "n") 'evil-search-next)
+      (evilem-define (kbd-pfx "N") 'evil-search-previous)
+      (evilem-define (kbd-pfx "*") 'evil-search-word-forward)
+      (evilem-define (kbd-pfx "#") 'evil-search-word-backward)
 
-    (evilem-define (kbd-pfx "-") 'evil-previous-line-first-non-blank)
-    (evilem-define (kbd-pfx "+") 'evil-next-line-first-non-blank)))
+      (evilem-define (kbd-pfx "-") 'evil-previous-line-first-non-blank)
+      (evilem-define (kbd-pfx "+") 'evil-next-line-first-non-blank))))
 
 (provide 'evil-easymotion)
 ;;; evil-easymotion.el ends here
