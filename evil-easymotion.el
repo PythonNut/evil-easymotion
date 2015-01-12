@@ -58,7 +58,6 @@
 ;;; Code:
 (require 'cl-lib)
 (require 'noflet)
-(require 'ace-jump-mode)
 
 ;; macro helper, from evil source
 (defun evilem-unquote (exp)
@@ -115,6 +114,7 @@
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(evil-define-motion ,name (count)
+     (unless (featurep 'ace-jump-mode) (require 'ace-jump-mode))
      (cl-letf ((ace-jump-mode-move-keys))
        (evil-without-repeat
          ,(when pre-hook
@@ -131,6 +131,7 @@
 (defmacro evilem-make-motion-plain (name func &optional pre-hook post-hook vars)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
+     (unless (featurep 'ace-jump-mode) (require 'ace-jump-mode))
      (interactive)
      (cl-letf ((ace-jump-mode-move-keys))
        ,(when pre-hook
