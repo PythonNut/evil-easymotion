@@ -87,6 +87,7 @@
               (call-interactively ,func)))
      (let ((points)
             (count 0)
+            (duplicate-count 0)
 
             ;; make sure the motion doesn't move the window
             (smooth-scroll-margin 0)
@@ -96,15 +97,16 @@
             (win-end (window-end)))
        (save-excursion
          (with-no-warnings (execute-motion))
-         (while (when (and
-                        (>= (point) win-start)
-                        (<= (point) win-end)
-                        (not (eobp))
-                        (not (bobp)))
-                  (push (point) points)
-                  (setq count (1+ count))
-                  (ignore-errors (execute-motion))
-                  t))
+         (while (and
+                  (>= (point) win-start)
+                  (<= (point) win-end)
+                  (< duplicate-count 10))
+           (if (memq (point) points)
+             (setq duplicate-count (1+ duplicate-count))
+             (push (point) points)
+             (setq duplicate-count 0))
+           (setq count (1+ count))
+           (ignore-errors (execute-motion)))
          (set-window-start (selected-window) win-start)
          (let ((list-length (length ace-jump-mode-move-keys)))
            (setq ace-jump-mode-move-keys
