@@ -28,6 +28,12 @@ If you want to access the motions in other evil states, you can easily use a red
 (define-key evil-insert-state-map (kbd "M-SPC") (lookup-key evil-motion-state-map (kbd "SPC")))
 ```
 
+Contributing
+============
+I _invite_ you to open issues about whatever you find lacking in `evil-easymotion`! I will try to get to you in a timely fasion (probably only good until 2016).
+
+Pull requests are welcome as well!
+
 Credits
 =======
 I'm deeply indebted to:
