@@ -98,7 +98,9 @@
          (with-no-warnings (execute-motion))
          (while (when (and
                         (>= (point) win-start)
-                        (<= (point) win-end))
+                        (<= (point) win-end)
+                        (not (eobp))
+                        (not (bobp)))
                   (push (point) points)
                   (setq count (1+ count))
                   (ignore-errors (execute-motion))
