@@ -85,7 +85,6 @@
                 this-command ,func)
               (call-interactively ,func)))
      (let ((points)
-            (count 0)
             (duplicate-count 0)
 
             ;; make sure the motion doesn't move the window
@@ -93,22 +92,26 @@
             (scroll-margin 0))
        (save-excursion
          (with-no-warnings (execute-motion))
-         (while (and
-                  (>= (point) (window-start))
-                  (<= (point) (window-end))
-                  (not (eobp))
-                  (not (bobp))
-                  (< duplicate-count 10))
-           (if (memq (point) points)
-             (setq duplicate-count (1+ duplicate-count))
-             (push (point) points)
-             (setq duplicate-count 0))
-           (setq count (1+ count))
-           (ignore-errors (execute-motion)))
+         (while
+           (progn
+             (ignore-errors (execute-motion))
+             (if (memq (point) points)
+               (setq duplicate-count (1+ duplicate-count))
+               (when (not (eobp))
+                 (push (point) points)
+                 (setq duplicate-count 0)))
+             (and
+               (>= (point) (window-start))
+               (<= (point) (window-end))
+               (not (eobp))
+               (not (bobp))
+               (< duplicate-count 10))))
          (let ((list-length (length ace-jump-mode-move-keys)))
            (setq ace-jump-mode-move-keys
              (reverse (butlast ace-jump-mode-move-keys
-                        (- list-length (min list-length count))))))
+                        (- list-length (min
+                                         list-length
+                                         (length points)))))))
          points))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
