@@ -91,10 +91,10 @@
             (smooth-scroll-margin 0)
             (scroll-margin 0))
        (save-excursion
-         (with-no-warnings (execute-motion))
          (while
            (progn
-             (ignore-errors (execute-motion))
+             (with-no-warnings
+               (with-demoted-errors (execute-motion)))
              (if (memq (point) points)
                (setq duplicate-count (1+ duplicate-count))
                (when (not (eobp))
