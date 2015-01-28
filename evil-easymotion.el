@@ -89,6 +89,9 @@
        (while
          (progn
            (with-demoted-errors
+             (setq
+               this-command ,func
+               last-command ,func)
              (call-interactively ,func))
            (if (memq (point) points)
              (setq duplicate-count (1+ duplicate-count))
