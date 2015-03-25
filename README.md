@@ -2,7 +2,7 @@ evil-easymotion
 ===============
 [![MELPA](http://melpa.org/packages/evil-easymotion-badge.svg)](http://melpa.org/#/evil-easymotion)
 
-In which we give easymotion a streak of malevolence. The goal is to behave approximately like [Lokaltog/**vim-easymotion**](https://github.com/Lokaltog/vim-easymotion).
+In which we give [Lokaltog/**vim-easymotion**](https://github.com/Lokaltog/vim-easymotion) a streak of malevolence.
 
 **Obligatory screencast**
 
