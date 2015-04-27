@@ -21,7 +21,13 @@ To define easymotions for all motions that evil defines by default, add
 ```
 This binds all motions under the prefix `SPC` in `evil-motion-state-map`. This is not done by default for motions defined manually. You will need to supply the prefix.
 
-Not all motions can be made easy (`evil-goto-line` for example).
+If you use [`evil-leader`](https://github.com/cofi/evil-leader), then you can bind motions like this:
+
+```emacs
+(evil-leader/set-key
+  "j" (evilem-create 'next-line))
+```
+_(Note that the actual binding is more complex, as it handles things like the Emacs `goal-column` and such. See the code for details)_
 
 If you want to access the motions in other evil states, you can easily use a redirection keybind
 ```emacs
