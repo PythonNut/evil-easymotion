@@ -83,6 +83,7 @@
           (duplicate-count 0)
 
           ;; make sure the motion doesn't move the window
+          (scroll-conservatively 101)
           (smooth-scroll-margin 0)
           (scroll-margin 0))
      (save-excursion
