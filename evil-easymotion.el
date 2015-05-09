@@ -59,6 +59,24 @@
 (require 'cl-lib)
 (require 'noflet)
 
+(defgroup evilem nil
+  "Emulate vim-easymotion"
+  :group 'convenience
+  :prefix "evilem-")
+
+(defcustom evilem-keys (string-to-list "zxbqpwomceirukdlsvnahgyt5647382910fj")
+  "Value of `avy-keys' to set during motions. Set to nil to leave unchanged."
+  :type '(repeat :tag "Keys" character))
+
+(defcustom evilem-style 'at-full
+  "Value of `avy-style' to set during motions. Set to nil to leave unchanged."
+  :type '(choice
+           (const :tag "Pre" pre)
+           (const :tag "At" at)
+           (const :tag "At Full" at-full)
+           (const :tag "Post" post)
+           (const :tag "Default" nil)))
+
 ;; macro helper, from evil source
 (defun evilem-unquote (exp)
   "Return EXP unquoted."
@@ -77,7 +95,7 @@
                   (cons (cons pt pt)
                     (get-buffer-window)))
                 collector)
-              #'avy--overlay-at)))
+              (avy--style-fn (or evilem-style avy-style)))))
     (avy--goto candidate)))
 
 (defun evilem-collect (func)
