@@ -56,8 +56,8 @@
 ;; More advanced use-cases are detailed in the github README.
 
 ;;; Code:
-(require 'cl-lib)
 (eval-when-compile
+  (require 'cl-lib)
   (require 'avy-jump))
 
 (defgroup evilem nil
