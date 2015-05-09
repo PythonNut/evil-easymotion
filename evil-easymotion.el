@@ -126,20 +126,16 @@
             (not (eobp))
             (not (bobp))
             (< duplicate-count 10))))
-      (let ((list-length (length ace-jump-mode-move-keys)))
-        (setq ace-jump-mode-move-keys
-          (reverse (butlast ace-jump-mode-move-keys
-                     (- list-length (min
-                                      list-length
-                                      (length points)))))))
-      points)))
+      (nreverse points))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(evil-define-motion ,name (count)
      (evil-without-repeat
        ,(when pre-hook `(funcall ,pre-hook))
-       (let ,(append '((old-point (point))) vars)
+       (let ,(append '((old-point (point))
+                        (avy-keys (or evilem-keys avy-keys)))
+               vars)
          (evilem-generic (evilem-collect ,func))
          ;; handle the off-by-one case
          (when (< (point) old-point)
@@ -151,7 +147,7 @@
   `(defun ,name ()
      (interactive)
      ,(when pre-hook `(funcall ,pre-hook))
-     (let ,vars
+     (let ,(append '((avy-keys (or evilem-keys avy-keys))) vars)
        (evilem-generic (evilem-collect ,func)))
      ,(when post-hook `(funcall ,post-hook))))
 
