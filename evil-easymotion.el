@@ -57,7 +57,6 @@
 
 ;;; Code:
 (require 'cl-lib)
-(require 'noflet)
 
 (defgroup evilem nil
   "Emulate vim-easymotion"
