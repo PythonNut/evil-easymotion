@@ -173,79 +173,78 @@
 (defun evilem-default-keybindings (prefix)
   "Define easymotions for all motions evil defines by default"
   (define-key evil-motion-state-map (kbd prefix) 'nil)
-  (with-no-warnings
-    (evilem-define (kbd (concat prefix " w")) 'evil-forward-word-begin)
-    (evilem-define (kbd (concat prefix " W")) 'evil-forward-WORD-begin)
-    (evilem-define (kbd (concat prefix " e")) 'evil-forward-word-end)
-    (evilem-define (kbd (concat prefix " E")) 'evil-forward-WORD-end)
-    (evilem-define (kbd (concat prefix " b")) 'evil-backward-word-begin)
-    (evilem-define (kbd (concat prefix " B")) 'evil-backward-WORD-begin)
-    (evilem-define (kbd (concat prefix " ge")) 'evil-backward-word-end)
-    (evilem-define (kbd (concat prefix " gE")) 'evil-backward-WORD-end)
+  (evilem-define (kbd (concat prefix " w")) 'evil-forward-word-begin)
+  (evilem-define (kbd (concat prefix " W")) 'evil-forward-WORD-begin)
+  (evilem-define (kbd (concat prefix " e")) 'evil-forward-word-end)
+  (evilem-define (kbd (concat prefix " E")) 'evil-forward-WORD-end)
+  (evilem-define (kbd (concat prefix " b")) 'evil-backward-word-begin)
+  (evilem-define (kbd (concat prefix " B")) 'evil-backward-WORD-begin)
+  (evilem-define (kbd (concat prefix " ge")) 'evil-backward-word-end)
+  (evilem-define (kbd (concat prefix " gE")) 'evil-backward-WORD-end)
 
-    (evilem-define (kbd (concat prefix " j")) 'next-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual nil)))
+  (evilem-define (kbd (concat prefix " j")) 'next-line
+    nil nil ((temporary-goal-column (current-column))
+              (line-move-visual nil)))
 
-    (evilem-define (kbd (concat prefix " k")) 'previous-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual nil)))
+  (evilem-define (kbd (concat prefix " k")) 'previous-line
+    nil nil ((temporary-goal-column (current-column))
+              (line-move-visual nil)))
 
-    (evilem-define (kbd (concat prefix " g j")) 'next-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual t)))
+  (evilem-define (kbd (concat prefix " g j")) 'next-line
+    nil nil ((temporary-goal-column (current-column))
+              (line-move-visual t)))
 
-    (evilem-define (kbd (concat prefix " g k")) 'previous-line
-      nil nil ((temporary-goal-column (current-column))
-                (line-move-visual t)))
+  (evilem-define (kbd (concat prefix " g k")) 'previous-line
+    nil nil ((temporary-goal-column (current-column))
+              (line-move-visual t)))
 
-    (evilem-define (kbd (concat prefix " t")) 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char-to))))
-      nil
-      ((evil-cross-lines t)))
+  (evilem-define (kbd (concat prefix " t")) 'evil-repeat-find-char
+    (lambda ()
+      (save-excursion
+        (let ((evil-cross-lines t))
+          (call-interactively 'evil-find-char-to))))
+    nil
+    ((evil-cross-lines t)))
 
-    (evilem-define (kbd (concat prefix " T")) 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char-to-backward))))
-      nil
-      ((evil-cross-lines t)))
+  (evilem-define (kbd (concat prefix " T")) 'evil-repeat-find-char
+    (lambda ()
+      (save-excursion
+        (let ((evil-cross-lines t))
+          (call-interactively 'evil-find-char-to-backward))))
+    nil
+    ((evil-cross-lines t)))
 
-    (evilem-define (kbd (concat prefix " f")) 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char))))
-      nil
-      ((evil-cross-lines t)))
+  (evilem-define (kbd (concat prefix " f")) 'evil-repeat-find-char
+    (lambda ()
+      (save-excursion
+        (let ((evil-cross-lines t))
+          (call-interactively 'evil-find-char))))
+    nil
+    ((evil-cross-lines t)))
 
-    (evilem-define (kbd (concat prefix " F")) 'evil-repeat-find-char
-      (lambda ()
-        (save-excursion
-          (let ((evil-cross-lines t))
-            (call-interactively 'evil-find-char-backward))))
-      nil
-      ((evil-cross-lines t)))
+  (evilem-define (kbd (concat prefix " F")) 'evil-repeat-find-char
+    (lambda ()
+      (save-excursion
+        (let ((evil-cross-lines t))
+          (call-interactively 'evil-find-char-backward))))
+    nil
+    ((evil-cross-lines t)))
 
-    (evilem-define (kbd (concat prefix " [[")) 'evil-backward-section-begin)
-    (evilem-define (kbd (concat prefix " []")) 'evil-backward-section-end)
-    (evilem-define (kbd (concat prefix " ]]")) 'evil-forward-section-begin)
-    (evilem-define (kbd (concat prefix " ][")) 'evil-forward-section-end)
+  (evilem-define (kbd (concat prefix " [[")) 'evil-backward-section-begin)
+  (evilem-define (kbd (concat prefix " []")) 'evil-backward-section-end)
+  (evilem-define (kbd (concat prefix " ]]")) 'evil-forward-section-begin)
+  (evilem-define (kbd (concat prefix " ][")) 'evil-forward-section-end)
 
-    (evilem-define (kbd (concat prefix " (")) 'evil-forward-sentence)
-    (evilem-define (kbd (concat prefix " )")) 'evil-backward-sentence)
+  (evilem-define (kbd (concat prefix " (")) 'evil-forward-sentence)
+  (evilem-define (kbd (concat prefix " )")) 'evil-backward-sentence)
 
-    (evilem-define (kbd (concat prefix " n")) 'evil-search-next)
-    (evilem-define (kbd (concat prefix " N")) 'evil-search-previous)
-    (evilem-define (kbd (concat prefix " *")) 'evil-search-word-forward)
-    (evilem-define (kbd (concat prefix " #")) 'evil-search-word-backward)
+  (evilem-define (kbd (concat prefix " n")) 'evil-search-next)
+  (evilem-define (kbd (concat prefix " N")) 'evil-search-previous)
+  (evilem-define (kbd (concat prefix " *")) 'evil-search-word-forward)
+  (evilem-define (kbd (concat prefix " #")) 'evil-search-word-backward)
 
-    (evilem-define (kbd (concat prefix " -")) 'evil-previous-line-first-non-blank)
-    (evilem-define (kbd (concat prefix " +")) 'evil-next-line-first-non-blank)))
+  (evilem-define (kbd (concat prefix " -")) 'evil-previous-line-first-non-blank)
+  (evilem-define (kbd (concat prefix " +")) 'evil-next-line-first-non-blank))
 
 (provide 'evil-easymotion)
 ;;; evil-easymotion.el ends here
