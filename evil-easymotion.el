@@ -132,6 +132,7 @@
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(evil-define-motion ,name (count)
+     (require 'avy)
      (evil-without-repeat
        ,(when pre-hook `(funcall ,pre-hook))
        (let ,(append '((old-point (point))) vars)
@@ -144,6 +145,7 @@
 (defmacro evilem-make-motion-plain (name func &optional pre-hook post-hook vars)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
+     (require 'avy)
      (interactive)
      ,(when pre-hook `(funcall ,pre-hook))
      (let ,vars
