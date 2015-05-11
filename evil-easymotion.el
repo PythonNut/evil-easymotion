@@ -58,7 +58,7 @@
 ;;; Code:
 (eval-when-compile
   (require 'cl-lib)
-  (require 'avy-jump))
+  (require 'avy))
 
 (defgroup evilem nil
   "Emulate vim-easymotion"
