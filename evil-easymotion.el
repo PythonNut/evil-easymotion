@@ -69,13 +69,14 @@
   "Value of `avy-keys' to set during motions. Set to nil to leave unchanged."
   :type '(repeat :tag "Keys" character))
 
-(defcustom evilem-style 'at
+(defcustom evilem-style 'de-bruijn
   "Value of `avy-style' to set during motions. Set to nil to leave unchanged."
   :type '(choice
            (const :tag "Pre" pre)
            (const :tag "At" at)
            (const :tag "At Full" at-full)
            (const :tag "Post" post)
+           (const :tag "De Bruijn" de-bruijn)
            (const :tag "Default" nil)))
 
 ;; macro helper, from evil source
