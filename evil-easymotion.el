@@ -129,7 +129,7 @@
             (not (eobp))
             (not (bobp))
             (< duplicate-count 10))))
-      (nreverse points))))
+      (cl-sort points #'<))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
