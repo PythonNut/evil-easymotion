@@ -105,8 +105,6 @@
 (defun evilem-collect (func)
   "Repeatedly execute func, and collect the cursor positions into a list"
   (let ((points)
-         (duplicate-count 0)
-
          ;; make sure the motion doesn't move the window
          (scroll-conservatively 101)
          (smooth-scroll-margin 0)
@@ -115,21 +113,14 @@
       (while
         (progn
           (with-demoted-errors
-            (setq
-              this-command func
-              last-command func)
             (call-interactively func))
-          (if (memq (point) points)
-            (setq duplicate-count (1+ duplicate-count))
-            (when (not (eobp))
-              (push (point) points)
-              (setq duplicate-count 0)))
-          (and
-            (>= (point) (window-start))
-            (<= (point) (window-end))
-            (not (eobp))
-            (not (bobp))
-            (< duplicate-count 10))))
+          (unless (memq (point) points)
+            (when (not (eobp)) (push (point) points))
+            (and
+              (>= (point) (window-start))
+              (<= (point) (window-end))
+              (not (eobp))
+              (not (bobp))))))
       (cl-sort points #'<))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
