@@ -69,7 +69,7 @@
   "Value of `avy-keys' to set during motions. Set to nil to leave unchanged."
   :type '(repeat :tag "Keys" character))
 
-(defcustom evilem-style 'de-bruijn
+(defcustom evilem-style 'at
   "Value of `avy-style' to set during motions. Set to nil to leave unchanged."
   :type '(choice
            (const :tag "Pre" pre)
