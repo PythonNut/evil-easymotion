@@ -8,6 +8,18 @@ In which we give [Lokaltog/**vim-easymotion**](https://github.com/Lokaltog/vim-e
 
 ![screencast](img/evil-easymotion-demo.gif)
 
+Notice
+======
+
+`evil-easymotion` has recently replaced its [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) backend with [`avy`](https://github.com/abo-abo/avy). Avy has several advantages, including:
+
+1. Multiple character target display
+2. More customization options
+3. A cleaner codebase
+4. More sophisticated algorithms (coming!)
+
+(1) is of course, the most important because it paves the way for implementing the features of EasyMotion 2.0. I hope the transition hasn't been too rough. If you encounter any problems, please tell.
+
 Usage
 =====
 Currently most motions are supported, and it's easy to define your own easymotions.
@@ -43,6 +55,5 @@ Pull requests are welcome as well!
 Credits
 =======
 I'm deeply indebted to:
-* [abo-abo](https://github.com/abo-abo/) for authoring [`ace-link`](https://github.com/abo-abo/ace-link/), which inspired this package. In particular, the function `ali-generic` which allows `ace-jump-mode` to jump to arbitrary points.
-* [winterTTR](https://github.com/winterTTr) for authoring [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode), on which this package depends.
+* [abo-abo](https://github.com/abo-abo) for authoring [`avy`](https://github.com/abo-abo/avy), on which this package depends.
 * [Lokaltog](https://github.com/Lokaltog) for authoring [`vim-easymotion`](https://github.com/Lokaltog/vim-easymotion) and creating the paradigm which this package emulates.
