@@ -112,6 +112,9 @@
     (save-excursion
       (while
         (progn
+          (setq
+            this-command func
+            last-command func)
           (with-demoted-errors
             (call-interactively func))
           (unless (memq (point) points)
