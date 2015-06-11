@@ -130,12 +130,10 @@
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(evil-define-motion ,name (count)
      (evil-without-repeat
+       (setq evil-this-type 'inclusive)
        ,(when pre-hook `(funcall ,pre-hook))
        (let ,(append '((old-point (point))) vars)
-         (evilem-generic (evilem-collect ,func))
-         ;; handle the off-by-one case
-         (when (< (point) old-point)
-           (setq evil-this-type 'exclusive)))
+         (evilem-generic (evilem-collect ,func)))
        ,(when post-hook `(funcall ,post-hook)))))
 
 (defmacro evilem-make-motion-plain (name func &optional pre-hook post-hook vars)
