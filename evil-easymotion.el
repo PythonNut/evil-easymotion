@@ -6,7 +6,7 @@
 ;; Keywords: convenience, evil
 ;; Version: 20141205
 ;; URL: https://github.com/pythonnut/evil-easymotion.el
-;; Package-Requires: ((emacs "24") (cl-lib "0.5") (avy "20150508.1418"))
+;; Package-Requires: ((emacs "24") (avy "20150508.1418"))
 
 ;;; License:
 
@@ -56,9 +56,7 @@
 ;; More advanced use-cases are detailed in the github README.
 
 ;;; Code:
-(eval-when-compile
-  (require 'cl-lib)
-  (require 'avy))
+(eval-when-compile (require 'avy))
 
 (defgroup evilem nil
   "Emulate vim-easymotion"
@@ -123,7 +121,7 @@
               (<= (point) (window-end))
               (not (eobp))
               (not (bobp))))))
-      (cl-sort points #'<))))
+      (sort points #'<))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
