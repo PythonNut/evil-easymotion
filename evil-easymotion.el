@@ -174,20 +174,32 @@
   (evilem-define (kbd (concat prefix " gE")) 'evil-backward-WORD-end)
 
   (evilem-define (kbd (concat prefix " j")) 'next-line
-    nil nil ((temporary-goal-column (current-column))
-              (line-move-visual nil)))
+    (lambda ()
+      (setq evil-this-type 'line))
+    nil
+    ((temporary-goal-column (current-column))
+      (line-move-visual nil)))
 
   (evilem-define (kbd (concat prefix " k")) 'previous-line
-    nil nil ((temporary-goal-column (current-column))
-              (line-move-visual nil)))
+    (lambda ()
+      (setq evil-this-type 'line))
+    nil
+    ((temporary-goal-column (current-column))
+      (line-move-visual nil)))
 
   (evilem-define (kbd (concat prefix " g j")) 'next-line
-    nil nil ((temporary-goal-column (current-column))
-              (line-move-visual t)))
+    (lambda ()
+      (setq evil-this-type 'line))
+    nil
+    ((temporary-goal-column (current-column))
+      (line-move-visual t)))
 
   (evilem-define (kbd (concat prefix " g k")) 'previous-line
-    nil nil ((temporary-goal-column (current-column))
-              (line-move-visual t)))
+    (lambda ()
+      (setq evil-this-type 'line))
+    nil
+    ((temporary-goal-column (current-column))
+      (line-move-visual t)))
 
   (evilem-define (kbd (concat prefix " t")) 'evil-repeat-find-char
     (lambda ()
@@ -221,10 +233,21 @@
     nil
     ((evil-cross-lines t)))
 
-  (evilem-define (kbd (concat prefix " [[")) 'evil-backward-section-begin)
-  (evilem-define (kbd (concat prefix " []")) 'evil-backward-section-end)
-  (evilem-define (kbd (concat prefix " ]]")) 'evil-forward-section-begin)
-  (evilem-define (kbd (concat prefix " ][")) 'evil-forward-section-end)
+  (evilem-define (kbd (concat prefix " [[")) 'evil-backward-section-begin
+    (lambda ()
+      (setq evil-this-type 'line)))
+
+  (evilem-define (kbd (concat prefix " []")) 'evil-backward-section-end
+    (lambda ()
+      (setq evil-this-type 'line)))
+
+  (evilem-define (kbd (concat prefix " ]]")) 'evil-forward-section-begin
+    (lambda ()
+      (setq evil-this-type 'line)))
+
+  (evilem-define (kbd (concat prefix " ][")) 'evil-forward-section-end
+    (lambda ()
+      (setq evil-this-type 'line)))
 
   (evilem-define (kbd (concat prefix " (")) 'evil-forward-sentence)
   (evilem-define (kbd (concat prefix " )")) 'evil-backward-sentence)
