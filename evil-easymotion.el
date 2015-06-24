@@ -128,19 +128,19 @@
   `(evil-define-motion ,name (count)
      (evil-without-repeat
        (setq evil-this-type 'inclusive)
-       ,(when pre-hook `(funcall ,pre-hook))
        (let ,(append '((old-point (point))) vars)
-         (evilem-generic (evilem-collect ,func)))
-       ,(when post-hook `(funcall ,post-hook)))))
+         ,(when pre-hook `(funcall ,pre-hook))
+         (evilem-generic (evilem-collect ,func))
+         ,(when post-hook `(funcall ,post-hook))))))
 
 (defmacro evilem-make-motion-plain (name func &optional pre-hook post-hook vars)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
-     ,(when pre-hook `(funcall ,pre-hook))
      (let ,vars
-       (evilem-generic (evilem-collect ,func)))
-     ,(when post-hook `(funcall ,post-hook))))
+       ,(when pre-hook `(funcall ,pre-hook))
+       (evilem-generic (evilem-collect ,func))
+       ,(when post-hook `(funcall ,post-hook)))))
 
 (defmacro evilem-create (motion &optional pre-hook post-hook vars)
   `(evilem-make-motion
