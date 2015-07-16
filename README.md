@@ -37,13 +37,7 @@ Or, if you prefer more granular control:
 (evilem-define (kbd "SPC w") 'evil-forward-word-begin)
 ```
 
-If you use [`evil-leader`](https://github.com/cofi/evil-leader), then you can bind motions like this:
-
-```emacs
-(evil-leader/set-key
-  "j" (evilem-create 'next-line))
-```
-_(Note that the actual binding is more complex, as it handles things like the Emacs `goal-column` and such. See the code for details)_
+You can always drop by [the wiki](https://github.com/PythonNut/evil-easymotion/wiki) for more tips.
 
 Contributing
 ============
