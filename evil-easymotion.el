@@ -115,11 +115,11 @@
           (with-demoted-errors
             (call-interactively func))
           (unless (memq (point) points)
-            (when (not (eobp)) (push (point) points))
             (and
+              (when (not (eobp))
+                (push (point) points))
               (>= (point) (window-start))
               (<= (point) (window-end))
-              (not (eobp))
               (not (bobp))))))
       (sort points #'<))))
 
