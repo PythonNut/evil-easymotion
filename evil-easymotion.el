@@ -117,13 +117,14 @@
             last-command func)
           (with-demoted-errors
             (call-interactively func))
-          (unless (memq (point) points)
-            (and
-              (when (not (eobp))
-                (push (point) points))
-              (>= (point) (window-start))
-              (<= (point) (window-end))
-              (not (bobp))))))
+          (and
+            (>= (point) (window-start))
+            (<= (point) (window-end))
+            (not (and
+                   (memq (point) points)
+                   (eobp)
+                   (bobp)))
+            (push (point) points))))
       (sort points #'<))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
