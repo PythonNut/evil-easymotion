@@ -15,14 +15,14 @@ Currently most motions are supported, and it's easy to define your own easymotio
 Notice
 ======
 
-`evil-easymotion` has recently replaced its [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) backend with [`avy`](https://github.com/abo-abo/avy). Avy has several advantages, including:
+`evil-easymotion` has replaced its [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) backend with [`avy`](https://github.com/abo-abo/avy). Avy has several advantages, including:
 
 1. Multiple character target display
 2. More customization options
 3. A cleaner codebase
-4. More sophisticated algorithms (coming!)
+4. More sophisticated algorithms
 
-(1) is of course, the most important because it paves the way for implementing the features of EasyMotion 2.0. I hope the transition hasn't been too rough. If you encounter any problems, please tell.
+(1) is of course, the most important because it paves the way for implementing the features of EasyMotion 2.0.
 
 Usage
 =====
