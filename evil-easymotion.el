@@ -120,7 +120,7 @@
           (and
             (>= (point) (window-start))
             (<= (point) (window-end))
-            (not (and
+            (not (or
                    (memq (point) points)
                    (eobp)
                    (bobp)))
