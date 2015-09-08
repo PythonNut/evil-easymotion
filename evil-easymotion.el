@@ -57,8 +57,7 @@
 
 ;;; Code:
 (eval-when-compile
-  (with-demoted-errors
-      (require 'avy)))
+  (require 'avy))
 
 (defgroup evilem nil
   "Emulate vim-easymotion"
