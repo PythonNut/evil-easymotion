@@ -131,7 +131,7 @@
   `(evil-define-motion ,name (count)
      (evil-without-repeat
        (setq evil-this-type 'inclusive)
-       (let ,(append '((old-point (point))) vars)
+       (let ,vars
          ,(when pre-hook `(funcall ,pre-hook))
          (evilem-generic (evilem-collect ,func))
          ,(when post-hook `(funcall ,post-hook))))))
