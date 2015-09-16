@@ -128,7 +128,7 @@
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
-  `(evil-define-motion ,name (count)
+  `(evil-define-motion ,name (_count)
      (evil-without-repeat
        (setq evil-this-type 'inclusive)
        (let ,vars
