@@ -12,17 +12,10 @@ Suppose you're a proud user of `evil`, but you have a nasty habit: when you want
 
 Currently most motions are supported, and it's easy to define your own easymotions. Easymotions can also be composed with operators e.g. <kbd>d</kbd><kbd>SPC</kbd><kbd>j</kbd> to delete a bunch of lines.
 
-Notice
-======
+Help Wanted
+===========
 
-`evil-easymotion` has replaced its [`ace-jump-mode`](https://github.com/winterTTr/ace-jump-mode) backend with [`avy`](https://github.com/abo-abo/avy). Avy has several advantages, including:
-
-1. Multiple character target display
-2. More customization options
-3. A cleaner codebase
-4. More sophisticated algorithms
-
-(1) is of course, the most important because it paves the way for implementing the features of EasyMotion 2.0.
+I've been struggling with a strange [error](https://github.com/PythonNut/evil-easymotion/issues/19) that I can't seem to reliably reproduce. I don't know what causes it. If you can help (even by just finding a reliable way to reproduce), that would be awesome.
 
 Usage
 =====
