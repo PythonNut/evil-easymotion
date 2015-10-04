@@ -6,7 +6,7 @@
 ;; Keywords: convenience, evil
 ;; Version: 20141205
 ;; URL: https://github.com/pythonnut/evil-easymotion.el
-;; Package-Requires: ((emacs "24") (avy "20150508.1418"))
+;; Package-Requires: ((emacs "24") (avy "0.3.0"))
 
 ;;; License:
 
@@ -92,14 +92,13 @@
   (let* ((avy-style (or evilem-style avy-style))
          (avy-keys (or evilem-keys avy-keys))
          (avy-all-windows nil))
-    (avy--goto
-     (avy--process
-      (mapcar
-       (lambda (pt)
-         (cons (cons pt pt)
-               (get-buffer-window)))
-       collector)
-      (avy--style-fn avy-style)))))
+    (avy--process
+     (mapcar
+      (lambda (pt)
+        (cons (cons pt pt)
+              (get-buffer-window)))
+      collector)
+     (avy--style-fn avy-style))))
 
 (defun evilem-collect (func)
   "Repeatedly execute func, and collect the cursor positions into a list"
