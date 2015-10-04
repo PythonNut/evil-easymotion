@@ -92,14 +92,13 @@
   (let* ((avy-style (or evilem-style avy-style))
          (avy-keys (or evilem-keys avy-keys))
          (avy-all-windows nil))
-    (avy--goto
-     (avy--process
-      (mapcar
-       (lambda (pt)
-         (cons (cons pt pt)
-               (get-buffer-window)))
-       collector)
-      (avy--style-fn avy-style)))))
+    (avy--process
+     (mapcar
+      (lambda (pt)
+        (cons (cons pt pt)
+              (get-buffer-window)))
+      collector)
+     (avy--style-fn avy-style))))
 
 (defun evilem-collect (func)
   "Repeatedly execute func, and collect the cursor positions into a list"
