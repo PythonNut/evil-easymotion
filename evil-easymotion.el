@@ -6,7 +6,7 @@
 ;; Keywords: convenience, evil
 ;; Version: 20141205
 ;; URL: https://github.com/pythonnut/evil-easymotion.el
-;; Package-Requires: ((emacs "24") (avy "20150508.1418"))
+;; Package-Requires: ((emacs "24") (avy "0.3.0"))
 
 ;;; License:
 
