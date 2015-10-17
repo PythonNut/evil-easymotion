@@ -1,6 +1,6 @@
 ;;; evil-easymotion.el --- A port of vim's easymotion to emacs
 
-;; Copyright (C) 2014 PythonNut
+;; Copyright (C) 2014, 2015 PythonNut
 
 ;; Author: PythonNut <pythonnut@pythonnut.com>
 ;; Keywords: convenience, evil
