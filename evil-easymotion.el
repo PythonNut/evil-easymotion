@@ -139,13 +139,13 @@
 
 (defmacro evilem-create (motion &optional pre-hook post-hook vars)
   `(evilem-make-motion
-    ,(make-symbol
+    ,(intern
       (concat "evilem--motion-" (symbol-name (evilem--unquote motion))))
     ,motion ,pre-hook ,post-hook ,vars))
 
 (defmacro evilem-create-plain (motion &optional pre-hook post-hook vars)
   `(evilem-make-motion-plain
-    ,(make-symbol
+    ,(intern
       (concat "evilem--motion-" (symbol-name (evilem--unquote motion))))
     ,motion ,pre-hook ,post-hook ,vars))
 
