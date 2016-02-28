@@ -59,7 +59,8 @@
 (require 'cl-lib)
 
 (eval-when-compile
-  (require 'avy))
+  (require 'avy)
+  (require 'evil))
 
 (defgroup evilem nil
   "Emulate vim-easymotion"
