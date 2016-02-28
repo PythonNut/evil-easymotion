@@ -12,10 +12,9 @@ Suppose you're a proud user of `evil`, but you have a nasty habit: when you want
 
 Currently most motions are supported, and it's easy to define your own easymotions. Easymotions can also be composed with operators e.g. <kbd>d</kbd><kbd>SPC</kbd><kbd>j</kbd> to delete a bunch of lines.
 
-Help Wanted
-===========
-
-I've been struggling with a strange [error](https://github.com/PythonNut/evil-easymotion/issues/19) that I can't seem to reliably reproduce. I don't know what causes it. If you can help (even by just finding a reliable way to reproduce), that would be awesome.
+Notice
+======
+The `evil-easymotion` API has changed to use keyword arguments. The required changes (if any) to your config should be pretty self-explanatory. This should allow me to add more options in the future without breaking your config.
 
 Usage
 =====
@@ -31,12 +30,6 @@ Or, if you prefer more granular control:
 ```
 
 You can always drop by [the wiki](https://github.com/PythonNut/evil-easymotion/wiki) for more tips.
-
-Contributing
-============
-I _invite_ you to open issues about whatever you find lacking in `evil-easymotion`! I will try to get to you in a timely fasion (probably only good until 2016).
-
-Pull requests are welcome as well!
 
 Credits
 =======
