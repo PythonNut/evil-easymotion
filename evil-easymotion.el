@@ -101,7 +101,7 @@
                    points)
                   (avy--style-fn avy-style))))
 
-(defun evilem--collect (func)
+(defun evilem--collect (func &optional scope)
   "Repeatedly execute func, and collect the cursor positions into a list"
   (let ((points)
         ;; make sure the motion doesn't move the window
@@ -110,8 +110,18 @@
         (scroll-margin 0))
     (save-excursion
       (save-restriction
-        (narrow-to-region (max (point-min) (window-start))
-                          (min (point-max) (1- (window-end))))
+        (cl-destructuring-bind (beg . end)
+            (if scope
+                (bounds-of-thing-at-point scope)
+              (cons (point-min)
+                    (point-max)))
+
+          ;; trim trailing newline
+          (when (= (char-before end) 10)
+            (cl-decf end))
+
+          (narrow-to-region (max beg (window-start))
+                            (min end (1- (window-end)))))
         (while (and (ignore-errors
                       (setq this-command func
                             last-command func)
@@ -121,26 +131,26 @@
                     (push (point) points))))
       (nreverse points))))
 
-(cl-defmacro evilem-make-motion (name func &key pre-hook post-hook bind)
+(cl-defmacro evilem-make-motion (name func &key pre-hook post-hook bind scope)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(evil-define-motion ,name (_count)
      (evil-without-repeat
        (setq evil-this-type 'inclusive)
        (let ,bind
          ,(when pre-hook `(funcall ,pre-hook))
-         (evilem--jump (evilem--collect ,func))
+         (evilem--jump (evilem--collect ,func ,scope))
          ,(when post-hook `(funcall ,post-hook))))))
 
-(cl-defmacro evilem-make-motion-plain (name func &key pre-hook post-hook bind)
+(cl-defmacro evilem-make-motion-plain (name func &key pre-hook post-hook bind scope)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
      (let ,bind
        ,(when pre-hook `(funcall ,pre-hook))
-       (evilem--jump (evilem--collect ,func))
+       (evilem--jump (evilem--collect ,func ,scope))
        ,(when post-hook `(funcall ,post-hook)))))
 
-(cl-defmacro evilem-create (motion &key pre-hook post-hook bind)
+(cl-defmacro evilem-create (motion &key pre-hook post-hook bind scope)
   `(evilem-make-motion
     ,(intern
       (format "evilem--motion-%s-%s"
@@ -149,9 +159,10 @@
     ,motion
     :pre-hook ,pre-hook
     :post-hook ,post-hook
-    :bind ,bind))
+    :bind ,bind
+    :scope ,scope))
 
-(cl-defmacro evilem-create-plain (motion &key pre-hook post-hook bind)
+(cl-defmacro evilem-create-plain (motion &key pre-hook post-hook bind scope)
   `(evilem-make-motion-plain
     ,(intern
       (format "evilem--motion-%s-%s"
@@ -160,15 +171,17 @@
     ,motion
     :pre-hook ,pre-hook
     :post-hook ,post-hook
-    :bind ,bind))
+    :bind ,bind
+    :scope ,scope))
 
-(cl-defmacro evilem-define (key motion &key pre-hook post-hook bind)
+(cl-defmacro evilem-define (key motion &key pre-hook post-hook bind scope)
   "Automatically create and bind an evil motion"
   `(define-key evil-motion-state-map ,key
      (evilem-create ,motion
                     :pre-hook ,pre-hook
                     :post-hook ,post-hook
-                    :bind ,bind)))
+                    :bind ,bind
+                    :scope ,scope)))
 
 ;;;###autoload
 (defun evilem-default-keybindings (prefix)
