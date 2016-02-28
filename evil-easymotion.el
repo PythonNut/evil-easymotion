@@ -6,7 +6,7 @@
 ;; Keywords: convenience, evil
 ;; Version: 20141205
 ;; URL: https://github.com/pythonnut/evil-easymotion
-;; Package-Requires: ((emacs "24") (avy "0.3.0"))
+;; Package-Requires: ((emacs "24") (avy "0.3.0") (cl-lib "0.5"))
 
 ;;; License:
 
@@ -56,6 +56,8 @@
 ;; More advanced use-cases are detailed in the github README.
 
 ;;; Code:
+(require 'cl-lib)
+
 (eval-when-compile
   (require 'avy))
 
@@ -140,13 +142,17 @@
 (defmacro evilem-create (motion &optional pre-hook post-hook vars)
   `(evilem-make-motion
     ,(intern
-      (concat "evilem--motion-" (symbol-name (evilem--unquote motion))))
+      (format "evilem--motion-%s-%s"
+              (symbol-name (evilem--unquote motion))
+              (symbol-name (cl-gensym))))
     ,motion ,pre-hook ,post-hook ,vars))
 
 (defmacro evilem-create-plain (motion &optional pre-hook post-hook vars)
   `(evilem-make-motion-plain
     ,(intern
-      (concat "evilem--motion-" (symbol-name (evilem--unquote motion))))
+      (format "evilem--motion-%s-%s"
+              (symbol-name (evilem--unquote motion))
+              (symbol-name (cl-gensym))))
     ,motion ,pre-hook ,post-hook ,vars))
 
 ;;;###autoload
