@@ -118,7 +118,7 @@
                       t)
                     (not (memq (point) points))
                     (push (point) points))))
-      (sort points #'<))))
+      (nreverse points))))
 
 (defmacro evilem-make-motion (name func &optional pre-hook post-hook vars)
   "Automatically define an evil easymotion for `func', naming it `name'"
