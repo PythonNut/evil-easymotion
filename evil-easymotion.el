@@ -137,18 +137,26 @@
      (evil-without-repeat
        (setq evil-this-type 'inclusive)
        (let ,bind
-         ,(when pre-hook `(funcall ,pre-hook))
+         ,(when pre-hook `(funcall ,(if (functionp pre-hook)
+                                        pre-hook
+                                        `(lambda () ,pre-hook))))
          (evilem--jump (evilem--collect ,func ,scope))
-         ,(when post-hook `(funcall ,post-hook))))))
+         ,(when post-hook `(funcall ,(if (functionp post-hook)
+                                         post-hook
+                                         `(lambda () ,post-hook))))))))
 
 (cl-defmacro evilem-make-motion-plain (name func &key pre-hook post-hook bind scope)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
      (let ,bind
-       ,(when pre-hook `(funcall ,pre-hook))
+       ,(when pre-hook `(funcall ,(if (functionp pre-hook)
+                                      pre-hook
+                                      `(lambda () ,pre-hook))))
        (evilem--jump (evilem--collect ,func ,scope))
-       ,(when post-hook `(funcall ,post-hook)))))
+       ,(when post-hook `(funcall ,(if (functionp post-hook)
+                                       post-hook
+                                       `(lambda () ,post-hook)))))))
 
 (cl-defmacro evilem-create (motion &key pre-hook post-hook bind scope)
   `(evilem-make-motion
@@ -197,72 +205,60 @@
   (evilem-define (kbd (concat prefix " gE")) #'evil-backward-WORD-end)
 
   (evilem-define (kbd (concat prefix " j")) #'next-line
-                 :pre-hook (lambda ()
-                   (setq evil-this-type 'line))
+                 :pre-hook (setq evil-this-type 'line)
                  :bind ((temporary-goal-column (current-column))
                         (line-move-visual nil)))
 
   (evilem-define (kbd (concat prefix " k")) #'previous-line
-                 :pre-hook (lambda ()
-                   (setq evil-this-type 'line))
+                 :pre-hook (setq evil-this-type 'line)
                  :bind ((temporary-goal-column (current-column))
                         (line-move-visual nil)))
 
   (evilem-define (kbd (concat prefix " g j")) #'next-line
-                 :pre-hook (lambda ()
-                             (setq evil-this-type 'line))
+                 :pre-hook (setq evil-this-type 'line)
                  :bind ((temporary-goal-column (current-column))
                         (line-move-visual t)))
 
   (evilem-define (kbd (concat prefix " g k")) #'previous-line
-                 :pre-hook (lambda ()
-                             (setq evil-this-type 'line))
+                 :pre-hook (setq evil-this-type 'line)
                  :bind ((temporary-goal-column (current-column))
                         (line-move-visual t)))
 
   (evilem-define (kbd (concat prefix " t")) #'evil-repeat-find-char
-                 :pre-hook
-                 (lambda ()
-                   (save-excursion
-                     (let ((evil-cross-lines t))
-                       (call-interactively #'evil-find-char-to))))
+                 :pre-hook (save-excursion
+                             (let ((evil-cross-lines t))
+                               (call-interactively #'evil-find-char-to)))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " T")) #'evil-repeat-find-char
-                 :pre-hook
-                 (lambda ()
-                   (save-excursion
-                     (let ((evil-cross-lines t))
-                       (call-interactively #'evil-find-char-to-backward))))
+                 :pre-hook (save-excursion
+                             (let ((evil-cross-lines t))
+                               (call-interactively #'evil-find-char-to-backward)))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " f")) #'evil-repeat-find-char
-                 :pre-hook
-                 (lambda ()
-                   (save-excursion
-                     (let ((evil-cross-lines t))
-                       (call-interactively #'evil-find-char))))
+                 :pre-hook (save-excursion
+                             (let ((evil-cross-lines t))
+                               (call-interactively #'evil-find-char)))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " F")) #'evil-repeat-find-char
-                 :pre-hook
-                 (lambda ()
-                   (save-excursion
-                     (let ((evil-cross-lines t))
-                       (call-interactively #'evil-find-char-backward))))
+                 :pre-hook (save-excursion
+                             (let ((evil-cross-lines t))
+                               (call-interactively #'evil-find-char-backward)))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " [[")) #'evil-backward-section-begin
-                 :pre-hook (lambda () (setq evil-this-type 'line)))
+                 :pre-hook (setq evil-this-type 'line))
 
   (evilem-define (kbd (concat prefix " []")) #'evil-backward-section-end
-                 :pre-hook (lambda () (setq evil-this-type 'line)))
+                 :pre-hook (setq evil-this-type 'line))
 
   (evilem-define (kbd (concat prefix " ]]")) #'evil-forward-section-begin
-                 :pre-hook (lambda () (setq evil-this-type 'line)))
+                 :pre-hook (setq evil-this-type 'line))
 
   (evilem-define (kbd (concat prefix " ][")) #'evil-forward-section-end
-                 :pre-hook (lambda () (setq evil-this-type 'line)))
+                 :pre-hook (setq evil-this-type 'line))
 
   (evilem-define (kbd (concat prefix " (")) #'evil-forward-sentence-begin)
   (evilem-define (kbd (concat prefix " )")) #'evil-backward-sentence-begin)
