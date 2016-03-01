@@ -268,8 +268,8 @@
   (evilem-define (kbd (concat prefix " ][")) #'evil-forward-section-end
                  :pre-hook (setq evil-this-type 'line))
 
-  (evilem-define (kbd (concat prefix " (")) #'evil-forward-sentence-begin)
-  (evilem-define (kbd (concat prefix " )")) #'evil-backward-sentence-begin)
+  (evilem-define (kbd (concat prefix " (")) #'evil-backward-sentence-begin)
+  (evilem-define (kbd (concat prefix " )")) #'evil-forward-sentence-begin)
 
   (evilem-define (kbd (concat prefix " n")) #'evil-search-next)
   (evilem-define (kbd (concat prefix " N")) #'evil-search-previous)
