@@ -121,7 +121,7 @@
             (cl-decf end))
 
           (narrow-to-region (max beg (window-start))
-                            (min end (1- (window-end)))))
+                            (min end (window-end))))
         (while (and (ignore-errors
                       (setq this-command func
                             last-command func)
