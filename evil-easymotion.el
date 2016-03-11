@@ -136,7 +136,7 @@
   `(evil-define-motion ,name (_count)
      (evil-without-repeat
        (setq evil-this-type 'inclusive)
-       (let ,bind
+       (cl-letf ,bind
          ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                         pre-hook
                                         `(lambda () ,pre-hook))))
@@ -149,7 +149,7 @@
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
-     (let ,bind
+     (cl-letf ,bind
        ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                       pre-hook
                                       `(lambda () ,pre-hook))))
