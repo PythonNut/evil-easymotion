@@ -200,7 +200,10 @@
 (cl-defmacro evilem-define (key motion &key pre-hook post-hook bind scope
                                 all-windows)
   "Automatically create and bind an evil motion"
-  `(define-key evil-motion-state-map ,key
+  `(define-key ,(if all-windows
+                    'evil-normal-state-map
+                  'evil-motion-state-map)
+     ,key
      (evilem-create ,motion
                     :pre-hook ,pre-hook
                     :post-hook ,post-hook
