@@ -146,7 +146,7 @@
                   (evilem--collect f scope all-windows))
                 func))))
 
-(cl-defmacro evilem-make-motion (name func &key pre-hook post-hook bind scope
+(cl-defmacro evilem-make-motion (name funcs &key pre-hook post-hook bind scope
                                       all-windows)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(evil-define-motion ,name (_count)
@@ -156,12 +156,12 @@
          ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                         pre-hook
                                         `(lambda () ,pre-hook))))
-         (evilem--jump (evilem--collect ,func ,scope ,all-windows))
+         (evilem--jump (evilem--collect ,funcs ,scope ,all-windows))
          ,(when post-hook `(funcall ,(if (functionp post-hook)
                                          post-hook
                                          `(lambda () ,post-hook))))))))
 
-(cl-defmacro evilem-make-motion-plain (name func &key pre-hook post-hook bind scope
+(cl-defmacro evilem-make-motion-plain (name funcs &key pre-hook post-hook bind scope
                                             all-windows)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
@@ -170,41 +170,41 @@
        ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                       pre-hook
                                       `(lambda () ,pre-hook))))
-       (evilem--jump (evilem--collect ,func ,scope ,all-windows))
+       (evilem--jump (evilem--collect ,funcs ,scope ,all-windows))
        ,(when post-hook `(funcall ,(if (functionp post-hook)
                                        post-hook
                                        `(lambda () ,post-hook)))))))
 
-(cl-defmacro evilem-create (motion &key pre-hook post-hook bind scope
+(cl-defmacro evilem-create (motions &key pre-hook post-hook bind scope
                                    all-windows)
   `(evilem-make-motion
-    ,(intern (evilem--make-name motion))
-    ,motion
+    ,(intern (evilem--make-name motions))
+    ,motions
     :pre-hook ,pre-hook
     :post-hook ,post-hook
     :bind ,bind
     :scope ,scope
     :all-windows ,all-windows))
 
-(cl-defmacro evilem-create-plain (motion &key pre-hook post-hook bind scope
+(cl-defmacro evilem-create-plain (motions &key pre-hook post-hook bind scope
                                          all-windows)
   `(evilem-make-motion-plain
-    ,(intern (evilem--make-name motion))
-    ,motion
+    ,(intern (evilem--make-name motions))
+    ,motions
     :pre-hook ,pre-hook
     :post-hook ,post-hook
     :bind ,bind
     :scope ,scope
     :all-windows ,all-windows))
 
-(cl-defmacro evilem-define (key motion &key pre-hook post-hook bind scope
+(cl-defmacro evilem-define (key motions &key pre-hook post-hook bind scope
                                 all-windows)
   "Automatically create and bind an evil motion"
   `(define-key ,(if all-windows
                     'evil-normal-state-map
                   'evil-motion-state-map)
      ,key
-     (evilem-create ,motion
+     (evilem-create ,motions
                     :pre-hook ,pre-hook
                     :post-hook ,post-hook
                     :bind ,bind
