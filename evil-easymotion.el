@@ -149,7 +149,10 @@
 (cl-defmacro evilem-make-motion (name funcs &key pre-hook post-hook bind scope
                                       all-windows)
   "Automatically define an evil easymotion for `func', naming it `name'"
-  `(evil-define-motion ,name (_count)
+  `(,(if all-windows
+         'evil-define-command
+       'evil-define-motion)
+    ,name (&optional _count)
      (evil-without-repeat
        (setq evil-this-type 'inclusive)
        (cl-letf* ,bind
