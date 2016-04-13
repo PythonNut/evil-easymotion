@@ -89,6 +89,10 @@ An object to limit the scope of an easymotion. `object` may be any *thing* under
 
 If `expr` is non-`nil`, the motion will be executed in all visible windows simultaneously. Because evil motions do not make sense across windows, `evil-define-command` is used instead of `evil-define-motion` and `evil-normal-state-map` is used instead of `evil-motion-state-map`.
 
+* `:initial-position callable`
+
+When specified, `(goto-char (funcall callable))` is run before the motion is executed. For example, use this to jump to the BOL of each line as in easymotion with `:initial-position #'point-at-bol`. Unlike in `:pre-hook`, `callable` is run once per window when `:all-windows` is specified.
+
 Credits
 =======
 I'm deeply indebted to:
