@@ -334,10 +334,22 @@
   (evilem-define (kbd (concat prefix " (")) #'evil-backward-sentence-begin)
   (evilem-define (kbd (concat prefix " )")) #'evil-forward-sentence-begin)
 
-  (evilem-define (kbd (concat prefix " n")) #'evil-search-next)
-  (evilem-define (kbd (concat prefix " N")) #'evil-search-previous)
-  (evilem-define (kbd (concat prefix " *")) #'evil-search-word-forward)
-  (evilem-define (kbd (concat prefix " #")) #'evil-search-word-backward)
+  (evilem-define (kbd (concat prefix " n")) #'evil-search-next
+                 :bind (((symbol-function #'isearch-lazy-highlight-update)
+                         #'ignore)
+                        (search-highlight nil)))
+  (evilem-define (kbd (concat prefix " N")) #'evil-search-previous
+                 :bind (((symbol-function #'isearch-lazy-highlight-update)
+                         #'ignore)
+                        (search-highlight nil)))
+  (evilem-define (kbd (concat prefix " *")) #'evil-search-word-forward
+                 :bind (((symbol-function #'isearch-lazy-highlight-update)
+                         #'ignore)
+                        (search-highlight nil)))
+  (evilem-define (kbd (concat prefix " #")) #'evil-search-word-backward
+                 :bind (((symbol-function #'isearch-lazy-highlight-update)
+                         #'ignore)
+                        (search-highlight nil)))
 
   (evilem-define (kbd (concat prefix " -"))
                  #'evil-previous-line-first-non-blank)
