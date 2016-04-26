@@ -110,13 +110,13 @@
 (defun evilem--collect (func &optional scope all-windows initial-point)
   "Repeatedly execute func, and collect the cursor positions into a list"
   (if (functionp func)
-      (let ((points)
-            (point)
-            (avy-all-windows all-windows)
-            ;; make sure the motion doesn't move the window
-            (scroll-conservatively 101)
-            (smooth-scroll-margin 0)
-            (scroll-margin 0))
+      (cl-letf ((points nil)
+                (point nil)
+                (avy-all-windows all-windows)
+                ;; make sure the motion doesn't move the window
+                (scroll-conservatively 101)
+                (smooth-scrolling-mode nil)
+                (scroll-margin 0))
         (avy-dowindows current-prefix-arg
           (save-excursion
             (save-restriction
