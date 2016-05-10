@@ -109,6 +109,7 @@
 
 (defun evilem--collect (func &optional scope all-windows initial-point)
   "Repeatedly execute func, and collect the cursor positions into a list"
+  (require 'avy)
   (if (functionp func)
       (cl-letf ((points nil)
                 (point nil)
