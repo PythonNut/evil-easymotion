@@ -179,20 +179,21 @@
          'evil-define-command
        'evil-define-motion)
     ,name (&optional _count)
-    (evil-without-repeat
-      (setq evil-this-type 'inclusive)
-      (cl-letf* ,bind
-        ,(when pre-hook `(funcall ,(if (functionp pre-hook)
-                                       pre-hook
-                                     `(lambda () ,pre-hook))))
-        (evilem--jump (evilem--collect ,funcs
-                                       ,scope
-                                       ,all-windows
-                                       ,initial-point
-                                       ,collect-postprocess))
-        ,(when post-hook `(funcall ,(if (functionp post-hook)
-                                        post-hook
-                                      `(lambda () ,post-hook))))))))
+    (avy-with ,name
+      (evil-without-repeat
+        (setq evil-this-type 'inclusive)
+        (cl-letf* ,bind
+          ,(when pre-hook `(funcall ,(if (functionp pre-hook)
+                                         pre-hook
+                                       `(lambda () ,pre-hook))))
+          (evilem--jump (evilem--collect ,funcs
+                                         ,scope
+                                         ,all-windows
+                                         ,initial-point
+                                         ,collect-postprocess))
+          ,(when post-hook `(funcall ,(if (functionp post-hook)
+                                          post-hook
+                                        `(lambda () ,post-hook)))))))))
 
 (cl-defmacro evilem-make-motion-plain (name
                                        funcs
@@ -207,18 +208,19 @@
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
-     (cl-letf* ,bind
-       ,(when pre-hook `(funcall ,(if (functionp pre-hook)
-                                      pre-hook
-                                    `(lambda () ,pre-hook))))
-       (evilem--jump (evilem--collect ,funcs
-                                      ,scope
-                                      ,all-windows
-                                      ,initial-point
-                                      ,collect-postprocess))
-       ,(when post-hook `(funcall ,(if (functionp post-hook)
-                                       post-hook
-                                       `(lambda () ,post-hook)))))))
+     (avy-with ,name
+       (cl-letf* ,bind
+         ,(when pre-hook `(funcall ,(if (functionp pre-hook)
+                                        pre-hook
+                                      `(lambda () ,pre-hook))))
+         (evilem--jump (evilem--collect ,funcs
+                                        ,scope
+                                        ,all-windows
+                                        ,initial-point
+                                        ,collect-postprocess))
+         ,(when post-hook `(funcall ,(if (functionp post-hook)
+                                         post-hook
+                                       `(lambda () ,post-hook))))))))
 
 (cl-defmacro evilem-create (motions
                             &key
