@@ -122,7 +122,6 @@
                              sort-key
                              collect-postprocess)
   "Repeatedly execute func, and collect the cursor positions into a list"
-  (require 'avy)
   (cl-letf ((points nil)
             (point nil)
             (avy-all-windows all-windows)
@@ -179,6 +178,7 @@
          'evil-define-command
        'evil-define-motion)
     ,name (&optional _count)
+    (require 'avy)
     (avy-with ,name
       (evil-without-repeat
         (setq evil-this-type 'inclusive)
@@ -208,6 +208,7 @@
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
+     (require 'avy)
      (avy-with ,name
        (cl-letf* ,bind
          ,(when pre-hook `(funcall ,(if (functionp pre-hook)
