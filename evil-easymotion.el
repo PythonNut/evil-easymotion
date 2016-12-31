@@ -163,6 +163,12 @@
                  #'evilem--default-collect-postprocess)
              points)))
 
+(defun evilem--compute-inclusivity (funcs)
+  (when (and (= (length funcs) 1)
+             (evil-has-command-properties-p (car funcs)))
+    `(setq evil-this-type
+           ',(evil-get-command-property (car funcs) :type))))
+
 (cl-defmacro evilem-make-motion (name
                                  funcs
                                  &key
@@ -181,7 +187,7 @@
     (require 'avy)
     (avy-with ,name
       (evil-without-repeat
-        (setq evil-this-type 'inclusive)
+        ,(evilem--compute-inclusivity funcs)
         (cl-letf* ,bind
           ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                          pre-hook
@@ -337,24 +343,28 @@
   (evilem-define (kbd (concat prefix " t")) #'evil-repeat-find-char
                  :name 'evilem--motion-evil-find-char-to
                  :pre-hook (save-excursion
+                             (setq evil-this-type 'inclusive)
                              (call-interactively #'evil-find-char-to))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " T")) #'evil-repeat-find-char
                  :name 'evilem--motion-evil-find-char-to-backward
                  :pre-hook (save-excursion
+                             (setq evil-this-type 'exclusive)
                              (call-interactively #'evil-find-char-to-backward))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " f")) #'evil-repeat-find-char
                  :name 'evilem--motion-evil-find-char
                  :pre-hook (save-excursion
+                             (setq evil-this-type 'inclusive)
                              (call-interactively #'evil-find-char))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " F")) #'evil-repeat-find-char
                  :name 'evilem--motion-evil-find-char-backward
                  :pre-hook (save-excursion
+                             (setq evil-this-type 'exclusive)
                              (call-interactively #'evil-find-char-backward))
                  :bind ((evil-cross-lines t)))
 
