@@ -225,6 +225,7 @@
 
 (cl-defmacro evilem-create (motions
                             &key
+                            name
                             pre-hook
                             post-hook
                             bind
@@ -233,7 +234,8 @@
                             initial-point
                             collect-postprocess)
   `(evilem-make-motion
-    ,(intern (evilem--make-name motions))
+    ,(or (evilem--unquote name)
+         (intern (evilem--make-name motions)))
     ,motions
     :pre-hook ,pre-hook
     :post-hook ,post-hook
@@ -245,6 +247,7 @@
 
 (cl-defmacro evilem-create-plain (motions
                                   &key
+                                  name
                                   pre-hook
                                   post-hook
                                   bind
@@ -253,7 +256,8 @@
                                   initial-point
                                   collect-postprocess)
   `(evilem-make-motion-plain
-    ,(intern (evilem--make-name motions))
+    ,(or (evilem--unquote name)
+         (intern (evilem--make-name motions)))
     ,motions
     :pre-hook ,pre-hook
     :post-hook ,post-hook
@@ -266,6 +270,7 @@
 (cl-defmacro evilem-define (key
                             motions
                             &key
+                            name
                             pre-hook
                             post-hook
                             bind
@@ -279,6 +284,7 @@
                   'evil-motion-state-map)
      ,key
      (evilem-create ,motions
+                    :name ,name
                     :pre-hook ,pre-hook
                     :post-hook ,post-hook
                     :bind ,bind
