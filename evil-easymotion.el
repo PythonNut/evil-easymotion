@@ -335,21 +335,25 @@
                         (line-move-visual t)))
 
   (evilem-define (kbd (concat prefix " t")) #'evil-repeat-find-char
+                 :name 'evilem--motion-evil-find-char-to
                  :pre-hook (save-excursion
                              (call-interactively #'evil-find-char-to))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " T")) #'evil-repeat-find-char
+                 :name 'evilem--motion-evil-find-char-to-backward
                  :pre-hook (save-excursion
                              (call-interactively #'evil-find-char-to-backward))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " f")) #'evil-repeat-find-char
+                 :name 'evilem--motion-evil-find-char
                  :pre-hook (save-excursion
                              (call-interactively #'evil-find-char))
                  :bind ((evil-cross-lines t)))
 
   (evilem-define (kbd (concat prefix " F")) #'evil-repeat-find-char
+                 :name 'evilem--motion-evil-find-char-backward
                  :pre-hook (save-excursion
                              (call-interactively #'evil-find-char-backward))
                  :bind ((evil-cross-lines t)))
