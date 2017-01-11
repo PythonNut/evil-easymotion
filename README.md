@@ -46,24 +46,24 @@ Where present, `collectors` is used as the motion specification for generating j
 
 * `(evilem-make-motion-plain name collectors &key ...)`
 
-Produce a function, named `name`, from `collectors`.
+    Produce a function, named `name`, from `collectors`.
 
 * `(evilem-make-motion name collectors &key ...)`
 
-Like `evilem-make-motion-plain`, but produce an evil motion produced with `evil-define-motion` instead of a plain `defun`.
+    Like `evilem-make-motion-plain`, but produce an evil motion produced with `evil-define-motion` instead of a plain `defun`.
 
 * `(evilem-create-plain collectors &key ...)`
 
-Like `evil-make-motion-plain`, but with an automatically generated `name`.
+    Like `evil-make-motion-plain`, but with an automatically generated `name`.
 
 * `(evilem-create collectors &key ...)`
 
-`evilem-create` : `evil-evilem-make-motion` :: `evilem-create-plain` : `evilem-make-motion-plain`
+    `evilem-create` : `evil-evilem-make-motion` :: `evilem-create-plain` : `evilem-make-motion-plain`
 
 
 * `(evilem-define key collectors)`
 
-Like `evilem-create`, but also bind the generated function to `key` in the relevant maps (either `evil-normal-state` or `evil-motion-state`, depending on other flags).
+    Like `evilem-create`, but also bind the generated function to `key` in the relevant maps (either `evil-normal-state` or `evil-motion-state`, depending on other flags).
 
 ### Keyword arguments
 
@@ -71,35 +71,35 @@ In addition, various keyword arguments may be used to modify the behavior of the
 
 * `:pre-hook expr`
 
-Code to run before the easymotion executes. `expr` may either be an (optionally sharp) quoted function name, a lambda, or a bare sexp, which is implictly wrapped in a lambda.
+    Code to run before the easymotion executes. `expr` may either be an (optionally sharp) quoted function name, a lambda, or a bare sexp, which is implictly wrapped in a lambda.
 
 * `:post-hook expr`
 
-Like `:pre-hook expr`, but code is run after the motion finishes.
+    Like `:pre-hook expr`, but code is run after the motion finishes.
 
 * `:bind forms`
 
-A list of forms to bind around the entire easymotion. `forms` may be any bindings accepted by [`cl-letf*`](http://www.gnu.org/software/emacs/manual/html_node/cl/Modify-Macros.html).
+    A list of forms to bind around the entire easymotion. `forms` may be any bindings accepted by [`cl-letf*`](http://www.gnu.org/software/emacs/manual/html_node/cl/Modify-Macros.html).
 
 * `:scope object`
 
-An object to limit the scope of an easymotion. `object` may be any *thing* understood by `thing-at-point`. In practice, `object` will often be `'line`.
+    An object to limit the scope of an easymotion. `object` may be any *thing* understood by `thing-at-point`. In practice, `object` will often be `'line`.
 
 * `:all-windows expr`
 
-If `expr` is non-`nil`, the motion will be executed in all visible windows simultaneously. Because evil motions do not make sense across windows, `evil-define-command` is used instead of `evil-define-motion` and `evil-normal-state-map` is used instead of `evil-motion-state-map`.
+    If `expr` is non-`nil`, the motion will be executed in all visible windows simultaneously. Because evil motions do not make sense across windows, `evil-define-command` is used instead of `evil-define-motion` and `evil-normal-state-map` is used instead of `evil-motion-state-map`.
 
 * `:initial-position callable`
 
-When specified, `(goto-char (funcall callable))` is run before the motion is executed. For example, use this to jump to the BOL of each line as in easymotion with `:initial-position #'point-at-bol`. Unlike in `:pre-hook`, `callable` is run once per window when `:all-windows` is specified.
+    When specified, `(goto-char (funcall callable))` is run before the motion is executed. For example, use this to jump to the BOL of each line as in easymotion with `:initial-position #'point-at-bol`. Unlike in `:pre-hook`, `callable` is run once per window when `:all-windows` is specified.
 
 * `:push-jump expr` 
 
-When `expr` is non-`nil`, the motion will push to the `evil` jump list before jumping. This defaults to `t` when the motion is un`:scope`ed.
+    When `expr` is non-`nil`, the motion will push to the `evil` jump list before jumping. This defaults to `t` when the motion is un`:scope`ed.
 
 * `:collect-postprocess callable`
 
-When specified, `callable` is called on the collected list of points (which is of the form `((point window)...)`). Otherwise, the default function, which sorts the points in order of increasing distance from `(point)`, is used.
+    When specified, `callable` is called on the collected list of points (which is of the form `((point window)...)`). Otherwise, the default function, which sorts the points in order of increasing distance from `(point)`, is used.
 
 Credits
 =======
