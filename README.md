@@ -93,6 +93,10 @@ If `expr` is non-`nil`, the motion will be executed in all visible windows simul
 
 When specified, `(goto-char (funcall callable))` is run before the motion is executed. For example, use this to jump to the BOL of each line as in easymotion with `:initial-position #'point-at-bol`. Unlike in `:pre-hook`, `callable` is run once per window when `:all-windows` is specified.
 
+* `:push-jump expr` 
+
+When `expr` is non-`nil`, the motion will push to the `evil` jump list before jumping. This defaults to `t` when the motion is un`:scope`ed.
+
 * `:collect-postprocess callable`
 
 When specified, `callable` is called on the collected list of points (which is of the form `((point window)...)`). Otherwise, the default function, which sorts the points in order of increasing distance from `(point)`, is used.

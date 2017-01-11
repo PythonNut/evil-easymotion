@@ -178,6 +178,7 @@
                                  scope
                                  all-windows
                                  initial-point
+                                 push-jump
                                  collect-postprocess)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(,(if all-windows
@@ -189,6 +190,8 @@
       (evil-without-repeat
         ,(evilem--compute-inclusivity funcs)
         (cl-letf* ,bind
+          ,(when (or push-jump (not scope))
+             '(evil--jumps-push))
           ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                          pre-hook
                                        `(lambda () ,pre-hook))))
@@ -238,6 +241,7 @@
                             scope
                             all-windows
                             initial-point
+                            push-jump
                             collect-postprocess)
   `(evilem-make-motion
     ,(or (evilem--unquote name)
@@ -249,6 +253,7 @@
     :scope ,scope
     :all-windows ,all-windows
     :initial-point ,initial-point
+    :push-jump ,push-jump
     :collect-postprocess ,collect-postprocess))
 
 (cl-defmacro evilem-create-plain (motions
@@ -283,6 +288,7 @@
                             scope
                             all-windows
                             initial-point
+                            push-jump
                             collect-postprocess)
   "Automatically create and bind an evil motion"
   `(define-key ,(if all-windows
@@ -297,6 +303,7 @@
                     :scope ,scope
                     :all-windows ,all-windows
                     :initial-point ,initial-point
+                    :push-jump ,push-jump
                     :collect-postprocess ,collect-postprocess)))
 
 ;;;###autoload
