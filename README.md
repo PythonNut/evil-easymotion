@@ -18,16 +18,22 @@ The `evil-easymotion` API has changed to use keyword arguments. The required cha
 
 Basic Usage
 ===========
-To define easymotions for all motions that evil defines by default, add
+
+`evil-easymotion` comes with predefined easymotions for all basic motions that evil defines by default, and provides key bindings for these using the standard evil keys in the built-in keymap `evilem-map`. To make these available for use, bind this keymap to a prefix:
+
 ```emacs
 (evilem-default-keybindings "SPC")
 ```
-This binds all motions under the prefix `SPC` in `evil-motion-state-map`. This is not done by default for motions defined manually. You will need to supply the prefix.
 
-Or, if you prefer more granular control:
+This binds all motions under the prefix <kbd>SPC</kbd> in `evil-motion-state-map`. Type <kbd>SPC</kbd><kbd>j</kbd> to give it a try.
+
+For motions defined manually, you need to bind the keys yourself, for instance using `evilem-define`:
+
 ```emacs
 (evilem-define (kbd "SPC w") 'evil-forward-word-begin)
 ```
+
+(This is just an example; this functionality is already available by default.)
 
 You can always drop by [the wiki](https://github.com/PythonNut/evil-easymotion/wiki) for more tips.
 
