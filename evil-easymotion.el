@@ -81,6 +81,9 @@
           (const :tag "De Bruijn" de-bruijn)
           (const :tag "Default" nil)))
 
+(defvar evilem-map (make-sparse-keymap)
+  "Keymap used for the default bindings")
+
 ;; macro helper, from evil source
 (eval-and-compile
   (defun evilem--unquote (exp)
