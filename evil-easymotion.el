@@ -167,11 +167,12 @@
                  #'evilem--default-collect-postprocess)
              points)))
 
-(defun evilem--compute-inclusivity (funcs)
-  (when (and (= (length funcs) 1)
-             (evil-has-command-properties-p (car funcs)))
-    `(setq evil-this-type
-           ',(evil-get-command-property (car funcs) :type))))
+(eval-and-compile
+  (defun evilem--compute-inclusivity (funcs)
+    (when (and (= (length funcs) 1)
+               (evil-has-command-properties-p (car funcs)))
+      `(setq evil-this-type
+             ',(evil-get-command-property (car funcs) :type)))))
 
 (cl-defmacro evilem-make-motion (name
                                  funcs
