@@ -4,7 +4,7 @@ evil-easymotion
 
 In which we give [Lokaltog/**vim-easymotion**](https://github.com/Lokaltog/vim-easymotion) a streak of malevolence.
 
-Suppose you're a proud user of `evil`, but you have a nasty habit: when you want to move ten lines down, you spam <kbd>j</kbd> ten times instead of using the ergonomically superior <kbd>10</kbd><kbd>j</kbd>. With `evil-easymotion` you can invoke <kbd>SPC</kbd><kbd>j</kbd>, and this plugin will put a target character on every possible position. Type the character on the target and **_wham_**! you have teleported there.
+Suppose you're a proud user of `evil`, but you have a nasty habit: when you want to move ten lines down, you hit <kbd>j</kbd> ten times in a row instead of using the ergonomically superior <kbd>10</kbd><kbd>j</kbd>. With `evil-easymotion` you can invoke <kbd>SPC</kbd><kbd>j</kbd>, and this plugin will put a target character on every possible position. Type the character on the target and **_wham_**! you have teleported there.
 
 **Obligatory screencast**
 
@@ -18,16 +18,22 @@ The `evil-easymotion` API has changed to use keyword arguments. The required cha
 
 Basic Usage
 ===========
-To define easymotions for all motions that evil defines by default, add
+
+`evil-easymotion` comes with predefined easymotions for all basic motions that evil defines by default, and provides key bindings for these using the standard evil keys in the built-in keymap `evilem-map`. To make these available for use, bind this keymap to a prefix:
+
 ```emacs
 (evilem-default-keybindings "SPC")
 ```
-This binds all motions under the prefix `SPC` in `evil-motion-state-map`. This is not done by default for motions defined manually. You will need to supply the prefix.
 
-Or, if you prefer more granular control:
+This binds all motions under the prefix <kbd>SPC</kbd> in `evil-motion-state-map`. Type <kbd>SPC</kbd><kbd>j</kbd> to give it a try.
+
+For motions defined manually, you need to bind the keys yourself, for instance using `evilem-define`:
+
 ```emacs
 (evilem-define (kbd "SPC w") 'evil-forward-word-begin)
 ```
+
+(This is just an example; this functionality is already available by default.)
 
 You can always drop by [the wiki](https://github.com/PythonNut/evil-easymotion/wiki) for more tips.
 
@@ -93,7 +99,7 @@ In addition, various keyword arguments may be used to modify the behavior of the
 
     When specified, `(goto-char (funcall callable))` is run before the motion is executed. For example, use this to jump to the BOL of each line as in easymotion with `:initial-position #'point-at-bol`. Unlike in `:pre-hook`, `callable` is run once per window when `:all-windows` is specified.
 
-* `:push-jump expr` 
+* `:push-jump expr`
 
     When `expr` is non-`nil`, the motion will push to the `evil` jump list before jumping. This defaults to `t` when the motion is un`:scope`ed.
 

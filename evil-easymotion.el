@@ -1,6 +1,7 @@
 ;;; evil-easymotion.el --- A port of vim's easymotion to emacs
 
 ;; Copyright (C) 2014, 2015, 2016 PythonNut
+;; Copyright (C) 2017 wouter bolsterlee
 
 ;; Author: PythonNut <pythonnut@pythonnut.com>
 ;; Keywords: convenience, evil
@@ -80,6 +81,9 @@
           (const :tag "Post" post)
           (const :tag "De Bruijn" de-bruijn)
           (const :tag "Default" nil)))
+
+(defvar evilem-map (make-sparse-keymap)
+  "Keymap used for the default bindings")
 
 ;; macro helper, from evil source
 (eval-and-compile
@@ -306,111 +310,203 @@
                     :push-jump ,push-jump
                     :collect-postprocess ,collect-postprocess)))
 
+;;;###autoload (autoload 'evilem-motion-forward-word-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-forward-word-begin #'evil-forward-word-begin
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-forward-WORD-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-forward-WORD-begin #'evil-forward-WORD-begin
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-forward-word-end "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-forward-word-end #'evil-forward-word-end
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-forward-WORD-end "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-forward-WORD-end #'evil-forward-WORD-end
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-backward-word-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-backward-word-begin #'evil-backward-word-begin
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-backward-WORD-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-backward-WORD-begin #'evil-backward-WORD-begin
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-backward-word-end "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-backward-word-end #'evil-backward-word-end
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-backward-WORD-end "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-backward-WORD-end #'evil-backward-WORD-end
+ :scope 'line)
+
+;;;###autoload (autoload 'evilem-motion-next-line "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-next-line #'next-line
+ :pre-hook (setq evil-this-type 'line)
+ :bind ((temporary-goal-column (current-column))
+        (line-move-visual nil)))
+
+;;;###autoload (autoload 'evilem-motion-previous-line "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-previous-line #'previous-line
+ :pre-hook (setq evil-this-type 'line)
+ :bind ((temporary-goal-column (current-column))
+        (line-move-visual nil)))
+
+;;;###autoload (autoload 'evilem-motion-next-visual-line "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-next-visual-line #'next-line
+ :pre-hook (setq evil-this-type 'line)
+ :bind ((temporary-goal-column (current-column))
+        (line-move-visual t)))
+
+;;;###autoload (autoload 'evilem-motion-previous-visual-line "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-previous-visual-line #'previous-line
+ :pre-hook (setq evil-this-type 'line)
+ :bind ((temporary-goal-column (current-column))
+        (line-move-visual t)))
+
+;;;###autoload (autoload 'evilem-motion-repeat-find-char-to "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-repeat-find-char-to #'evil-repeat-find-char
+ :pre-hook (save-excursion
+             (setq evil-this-type 'inclusive)
+             (call-interactively #'evil-find-char-to))
+ :bind ((evil-cross-lines t)))
+
+;;;###autoload (autoload 'evilem-motion-repeat-find-char-to-backward "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-repeat-find-char-to-backward #'evil-repeat-find-char
+ :pre-hook (save-excursion
+             (setq evil-this-type 'exclusive)
+             (call-interactively #'evil-find-char-to-backward))
+ :bind ((evil-cross-lines t)))
+
+;;;###autoload (autoload 'evilem-motion-repeat-find-char "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-repeat-find-char #'evil-repeat-find-char
+ :pre-hook (save-excursion
+             (setq evil-this-type 'inclusive)
+             (call-interactively #'evil-find-char))
+ :bind ((evil-cross-lines t)))
+
+;;;###autoload (autoload 'evilem-motion-repeat-find-char-backward "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-repeat-find-char-backward #'evil-repeat-find-char
+ :pre-hook (save-excursion
+             (setq evil-this-type 'exclusive)
+             (call-interactively #'evil-find-char-backward))
+ :bind ((evil-cross-lines t)))
+
+;;;###autoload (autoload 'evilem-motion-backward-section-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-backward-section-begin #'evil-backward-section-begin
+ :pre-hook (setq evil-this-type 'line))
+
+;;;###autoload (autoload 'evilem-motion-backward-section-end "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-backward-section-end #'evil-backward-section-end
+ :pre-hook (setq evil-this-type 'line))
+
+;;;###autoload (autoload 'evilem-motion-forward-section-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-forward-section-begin #'evil-forward-section-begin
+ :pre-hook (setq evil-this-type 'line))
+
+;;;###autoload (autoload 'evilem-motion-forward-section-end "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-forward-section-end #'evil-forward-section-end
+ :pre-hook (setq evil-this-type 'line))
+
+;;;###autoload (autoload 'evilem-motion-backward-sentence-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-backward-sentence-begin #'evil-backward-sentence-begin)
+
+;;;###autoload (autoload 'evilem-motion-forward-sentence-begin "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-forward-sentence-begin #'evil-forward-sentence-begin)
+
+;;;###autoload (autoload 'evilem-motion-search-next "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-search-next #'evil-search-next
+ :bind (((symbol-function #'isearch-lazy-highlight-update)
+         #'ignore)
+        (search-highlight nil)))
+
+;;;###autoload (autoload 'evilem-motion-search-previous "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-search-previous #'evil-search-previous
+ :bind (((symbol-function #'isearch-lazy-highlight-update)
+         #'ignore)
+        (search-highlight nil)))
+
+;;;###autoload (autoload 'evilem-motion-search-word-forward "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-search-word-forward #'evil-search-word-forward
+ :bind (((symbol-function #'isearch-lazy-highlight-update)
+         #'ignore)
+        (search-highlight nil)))
+
+;;;###autoload (autoload 'evilem-motion-search-word-backward "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-search-word-backward #'evil-search-word-backward
+ :bind (((symbol-function #'isearch-lazy-highlight-update)
+         #'ignore)
+        (search-highlight nil)))
+
+;;;###autoload (autoload 'evilem-motion-previous-line-first-non-blank "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-previous-line-first-non-blank #'evil-previous-line-first-non-blank)
+
+;;;###autoload (autoload 'evilem-motion-next-line-first-non-blank "evil-easymotion" nil t)
+(evilem-make-motion
+ evilem-motion-next-line-first-non-blank #'evil-next-line-first-non-blank)
+
 ;;;###autoload
 (defun evilem-default-keybindings (prefix)
   "Define easymotions for all motions evil defines by default"
-  (define-key evil-motion-state-map (kbd prefix) nil)
-  (evilem-define (kbd (concat prefix " w")) #'evil-forward-word-begin
-                 :scope 'line)
-  (evilem-define (kbd (concat prefix " W")) #'evil-forward-WORD-begin
-                 :scope 'line)
-  (evilem-define (kbd (concat prefix " e")) #'evil-forward-word-end
-                 :scope 'line)
-  (evilem-define (kbd (concat prefix " E")) #'evil-forward-WORD-end
-                 :scope 'line)
-  (evilem-define (kbd (concat prefix " b")) #'evil-backward-word-begin
-                 :scope 'line)
-  (evilem-define (kbd (concat prefix " B")) #'evil-backward-WORD-begin
-                 :scope 'line)
-  (evilem-define (kbd (concat prefix " ge")) #'evil-backward-word-end
-                 :scope 'line)
-  (evilem-define (kbd (concat prefix " gE")) #'evil-backward-WORD-end
-                 :scope 'line)
+  (define-key evil-motion-state-map (kbd prefix) evilem-map))
 
-  (evilem-define (kbd (concat prefix " j")) #'next-line
-                 :pre-hook (setq evil-this-type 'line)
-                 :bind ((temporary-goal-column (current-column))
-                        (line-move-visual nil)))
-
-  (evilem-define (kbd (concat prefix " k")) #'previous-line
-                 :pre-hook (setq evil-this-type 'line)
-                 :bind ((temporary-goal-column (current-column))
-                        (line-move-visual nil)))
-
-  (evilem-define (kbd (concat prefix " g j")) #'next-line
-                 :pre-hook (setq evil-this-type 'line)
-                 :bind ((temporary-goal-column (current-column))
-                        (line-move-visual t)))
-
-  (evilem-define (kbd (concat prefix " g k")) #'previous-line
-                 :pre-hook (setq evil-this-type 'line)
-                 :bind ((temporary-goal-column (current-column))
-                        (line-move-visual t)))
-
-  (evilem-define (kbd (concat prefix " t")) #'evil-repeat-find-char
-                 :name 'evilem--motion-evil-find-char-to
-                 :pre-hook (save-excursion
-                             (setq evil-this-type 'inclusive)
-                             (call-interactively #'evil-find-char-to))
-                 :bind ((evil-cross-lines t)))
-
-  (evilem-define (kbd (concat prefix " T")) #'evil-repeat-find-char
-                 :name 'evilem--motion-evil-find-char-to-backward
-                 :pre-hook (save-excursion
-                             (setq evil-this-type 'exclusive)
-                             (call-interactively #'evil-find-char-to-backward))
-                 :bind ((evil-cross-lines t)))
-
-  (evilem-define (kbd (concat prefix " f")) #'evil-repeat-find-char
-                 :name 'evilem--motion-evil-find-char
-                 :pre-hook (save-excursion
-                             (setq evil-this-type 'inclusive)
-                             (call-interactively #'evil-find-char))
-                 :bind ((evil-cross-lines t)))
-
-  (evilem-define (kbd (concat prefix " F")) #'evil-repeat-find-char
-                 :name 'evilem--motion-evil-find-char-backward
-                 :pre-hook (save-excursion
-                             (setq evil-this-type 'exclusive)
-                             (call-interactively #'evil-find-char-backward))
-                 :bind ((evil-cross-lines t)))
-
-  (evilem-define (kbd (concat prefix " [[")) #'evil-backward-section-begin
-                 :pre-hook (setq evil-this-type 'line))
-
-  (evilem-define (kbd (concat prefix " []")) #'evil-backward-section-end
-                 :pre-hook (setq evil-this-type 'line))
-
-  (evilem-define (kbd (concat prefix " ]]")) #'evil-forward-section-begin
-                 :pre-hook (setq evil-this-type 'line))
-
-  (evilem-define (kbd (concat prefix " ][")) #'evil-forward-section-end
-                 :pre-hook (setq evil-this-type 'line))
-
-  (evilem-define (kbd (concat prefix " (")) #'evil-backward-sentence-begin)
-  (evilem-define (kbd (concat prefix " )")) #'evil-forward-sentence-begin)
-
-  (evilem-define (kbd (concat prefix " n")) #'evil-search-next
-                 :bind (((symbol-function #'isearch-lazy-highlight-update)
-                         #'ignore)
-                        (search-highlight nil)))
-  (evilem-define (kbd (concat prefix " N")) #'evil-search-previous
-                 :bind (((symbol-function #'isearch-lazy-highlight-update)
-                         #'ignore)
-                        (search-highlight nil)))
-  (evilem-define (kbd (concat prefix " *")) #'evil-search-word-forward
-                 :bind (((symbol-function #'isearch-lazy-highlight-update)
-                         #'ignore)
-                        (search-highlight nil)))
-  (evilem-define (kbd (concat prefix " #")) #'evil-search-word-backward
-                 :bind (((symbol-function #'isearch-lazy-highlight-update)
-                         #'ignore)
-                        (search-highlight nil)))
-
-  (evilem-define (kbd (concat prefix " -"))
-                 #'evil-previous-line-first-non-blank)
-  (evilem-define (kbd (concat prefix " +"))
-                 #'evil-next-line-first-non-blank))
+(define-key evilem-map "w" #'evilem-motion-forward-word-begin)
+(define-key evilem-map "W" #'evilem-motion-forward-WORD-begin)
+(define-key evilem-map "e" #'evilem-motion-forward-word-end)
+(define-key evilem-map "E" #'evilem-motion-forward-WORD-end)
+(define-key evilem-map "b" #'evilem-motion-backward-word-begin)
+(define-key evilem-map "B" #'evilem-motion-backward-WORD-begin)
+(define-key evilem-map "ge" #'evilem-motion-backward-word-end)
+(define-key evilem-map "gE" #'evilem-motion-backward-WORD-end)
+(define-key evilem-map "j" #'evilem-motion-next-line)
+(define-key evilem-map "k" #'evilem-motion-previous-line)
+(define-key evilem-map "gj" #'evilem-motion-next-visual-line)
+(define-key evilem-map "gk" #'evilem-motion-previous-visual-line)
+(define-key evilem-map "t" #'evilem-motion-repeat-find-char-to)
+(define-key evilem-map "T" #'evilem-motion-repeat-find-char-to-backward)
+(define-key evilem-map "f" #'evilem-motion-repeat-find-char)
+(define-key evilem-map "F" #'evilem-motion-repeat-find-char-backward)
+(define-key evilem-map "[[" #'evilem-motion-backward-section-begin)
+(define-key evilem-map "[]" #'evilem-motion-backward-section-end)
+(define-key evilem-map "]]" #'evilem-motion-forward-section-begin)
+(define-key evilem-map "][" #'evilem-motion-forward-section-end)
+(define-key evilem-map "(" #'evilem-motion-backward-sentence-begin)
+(define-key evilem-map ")" #'evilem-motion-forward-sentence-begin)
+(define-key evilem-map "n" #'evilem-motion-search-next)
+(define-key evilem-map "N" #'evilem-motion-search-previous)
+(define-key evilem-map "*" #'evilem-motion-search-word-forward)
+(define-key evilem-map "#" #'evilem-motion-search-word-backward)
+(define-key evilem-map "-" #'evilem-motion-previous-line-first-non-blank)
+(define-key evilem-map "+" #'evilem-motion-next-line-first-non-blank)
 
 (provide 'evil-easymotion)
 ;;; evil-easymotion.el ends here
