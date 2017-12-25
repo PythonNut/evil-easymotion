@@ -379,33 +379,33 @@
  :bind ((temporary-goal-column (current-column))
         (line-move-visual t)))
 
-;;;###autoload (autoload 'evilem-motion-repeat-find-char-to "evil-easymotion" nil t)
+;;;###autoload (autoload 'evilem-motion-find-char-to "evil-easymotion" nil t)
 (evilem-make-motion
- evilem-motion-repeat-find-char-to #'evil-repeat-find-char
+ evilem-motion-find-char-to #'evil-repeat-find-char
  :pre-hook (save-excursion
              (setq evil-this-type 'inclusive)
              (call-interactively #'evil-find-char-to))
  :bind ((evil-cross-lines t)))
 
-;;;###autoload (autoload 'evilem-motion-repeat-find-char-to-backward "evil-easymotion" nil t)
+;;;###autoload (autoload 'evilem-motion-find-char-to-backward "evil-easymotion" nil t)
 (evilem-make-motion
- evilem-motion-repeat-find-char-to-backward #'evil-repeat-find-char
+ evilem-motion-find-char-to-backward #'evil-repeat-find-char
  :pre-hook (save-excursion
              (setq evil-this-type 'exclusive)
              (call-interactively #'evil-find-char-to-backward))
  :bind ((evil-cross-lines t)))
 
-;;;###autoload (autoload 'evilem-motion-repeat-find-char "evil-easymotion" nil t)
+;;;###autoload (autoload 'evilem-motion-find-char "evil-easymotion" nil t)
 (evilem-make-motion
- evilem-motion-repeat-find-char #'evil-repeat-find-char
+ evilem-motion-find-char #'evil-repeat-find-char
  :pre-hook (save-excursion
              (setq evil-this-type 'inclusive)
              (call-interactively #'evil-find-char))
  :bind ((evil-cross-lines t)))
 
-;;;###autoload (autoload 'evilem-motion-repeat-find-char-backward "evil-easymotion" nil t)
+;;;###autoload (autoload 'evilem-motion-find-char-backward "evil-easymotion" nil t)
 (evilem-make-motion
- evilem-motion-repeat-find-char-backward #'evil-repeat-find-char
+ evilem-motion-find-char-backward #'evil-repeat-find-char
  :pre-hook (save-excursion
              (setq evil-this-type 'exclusive)
              (call-interactively #'evil-find-char-backward))
@@ -492,10 +492,10 @@
 (define-key evilem-map "k" #'evilem-motion-previous-line)
 (define-key evilem-map "gj" #'evilem-motion-next-visual-line)
 (define-key evilem-map "gk" #'evilem-motion-previous-visual-line)
-(define-key evilem-map "t" #'evilem-motion-repeat-find-char-to)
-(define-key evilem-map "T" #'evilem-motion-repeat-find-char-to-backward)
-(define-key evilem-map "f" #'evilem-motion-repeat-find-char)
-(define-key evilem-map "F" #'evilem-motion-repeat-find-char-backward)
+(define-key evilem-map "t" #'evilem-motion-find-char-to)
+(define-key evilem-map "T" #'evilem-motion-find-char-to-backward)
+(define-key evilem-map "f" #'evilem-motion-find-char)
+(define-key evilem-map "F" #'evilem-motion-find-char-backward)
 (define-key evilem-map "[[" #'evilem-motion-backward-section-begin)
 (define-key evilem-map "[]" #'evilem-motion-backward-section-end)
 (define-key evilem-map "]]" #'evilem-motion-forward-section-begin)
