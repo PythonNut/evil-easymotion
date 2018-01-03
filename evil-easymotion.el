@@ -1,6 +1,6 @@
 ;;; evil-easymotion.el --- A port of vim's easymotion to emacs
 
-;; Copyright (C) 2014, 2015, 2016 PythonNut
+;; Copyright (C) 2014, 2015, 2016, 2018 PythonNut
 ;; Copyright (C) 2017 wouter bolsterlee
 
 ;; Author: PythonNut <pythonnut@pythonnut.com>
