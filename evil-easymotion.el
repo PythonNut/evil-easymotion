@@ -119,6 +119,7 @@
               (abs (- (point) (car pt)))
             most-positive-fixnum))))
 
+;;;###autoload
 (defun evilem--collect (func &optional
                              scope
                              all-windows
