@@ -125,7 +125,8 @@
                              all-windows
                              initial-point
                              sort-key
-                             collect-postprocess)
+                             collect-postprocess
+                             include-invisible)
   "Repeatedly execute func, and collect the cursor positions into a list"
   (cl-letf ((points nil)
             (point nil)
@@ -156,6 +157,19 @@
                             (setq this-command func
                                   last-command func)
                             (call-interactively func)
+                            (unless include-invisible
+                              (let ((ov (car (overlays-at (point)))))
+                                (while (and ov (member
+                                                'invisible
+                                                (overlay-properties ov)))
+                                  (goto-char (overlay-end ov))
+                                  ;; This is a bit of a hack, since we
+                                  ;; can't guarantee that we will end
+                                  ;; up at the same point if we start
+                                  ;; at the end of the invisible
+                                  ;; region vs. looping through it.
+                                  (call-interactively func)
+                                  (setq ov (car (overlays-at (point)))))))
                             t)
                           (setq point (cons (point) (get-buffer-window)))
                           (not (member point points))
@@ -185,7 +199,8 @@
                                  all-windows
                                  initial-point
                                  push-jump
-                                 collect-postprocess)
+                                 collect-postprocess
+                                 include-invisible)
   "Automatically define an evil easymotion for `func', naming it `name'"
   `(,(if all-windows
          'evil-define-command
@@ -205,7 +220,8 @@
                                          ,scope
                                          ,all-windows
                                          ,initial-point
-                                         ,collect-postprocess))
+                                         ,collect-postprocess
+                                         ,include-invisible))
           ,(when post-hook `(funcall ,(if (functionp post-hook)
                                           post-hook
                                         `(lambda () ,post-hook)))))))))
@@ -219,7 +235,8 @@
                                        scope
                                        all-windows
                                        initial-point
-                                       collect-postprocess)
+                                       collect-postprocess
+                                       include-invisible)
   "Automatically define a plain easymotion for `func', naming it `name'"
   `(defun ,name ()
      (interactive)
@@ -233,7 +250,8 @@
                                         ,scope
                                         ,all-windows
                                         ,initial-point
-                                        ,collect-postprocess))
+                                        ,collect-postprocess
+                                        ,include-invisible))
          ,(when post-hook `(funcall ,(if (functionp post-hook)
                                          post-hook
                                        `(lambda () ,post-hook))))))))
@@ -248,7 +266,8 @@
                             all-windows
                             initial-point
                             push-jump
-                            collect-postprocess)
+                            collect-postprocess
+                            include-invisible)
   `(evilem-make-motion
     ,(or (evilem--unquote name)
          (intern (evilem--make-name motions)))
@@ -260,7 +279,8 @@
     :all-windows ,all-windows
     :initial-point ,initial-point
     :push-jump ,push-jump
-    :collect-postprocess ,collect-postprocess))
+    :collect-postprocess ,collect-postprocess
+    :include-invisible ,include-invisible))
 
 (cl-defmacro evilem-create-plain (motions
                                   &key
@@ -271,7 +291,8 @@
                                   scope
                                   all-windows
                                   initial-point
-                                  collect-postprocess)
+                                  collect-postprocess
+                                  include-invisible)
   `(evilem-make-motion-plain
     ,(or (evilem--unquote name)
          (intern (evilem--make-name motions)))
@@ -282,7 +303,8 @@
     :scope ,scope
     :all-windows ,all-windows
     :initial-point ,initial-point
-    :collect-postprocess ,collect-postprocess))
+    :collect-postprocess ,collect-postprocess
+    :include-invisible ,include-invisible))
 
 (cl-defmacro evilem-define (key
                             motions
@@ -295,7 +317,8 @@
                             all-windows
                             initial-point
                             push-jump
-                            collect-postprocess)
+                            collect-postprocess
+                            include-invisible)
   "Automatically create and bind an evil motion"
   `(define-key ,(if all-windows
                     'evil-normal-state-map
@@ -310,7 +333,8 @@
                     :all-windows ,all-windows
                     :initial-point ,initial-point
                     :push-jump ,push-jump
-                    :collect-postprocess ,collect-postprocess)))
+                    :collect-postprocess ,collect-postprocess
+                    :include-invisible ,include-invisible)))
 
 ;;;###autoload (autoload 'evilem-motion-forward-word-begin "evil-easymotion" nil t)
 (evilem-make-motion

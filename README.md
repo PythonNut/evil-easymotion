@@ -107,6 +107,10 @@ In addition, various keyword arguments may be used to modify the behavior of the
 
     When specified, `callable` is called on the collected list of points (which is of the form `((point window)...)`). Otherwise, the default function, which sorts the points in order of increasing distance from `(point)`, is used.
 
+* `:include-invisible expr`
+
+    When `expr` is non-`nil`, the motion will not skip over invisible overlays. This may be required for motions that generate dramatically different sets of points if they are started at different locations. This defaults to `nil`.
+
 Credits
 =======
 I'm deeply indebted to:
