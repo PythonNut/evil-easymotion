@@ -339,42 +339,42 @@
 ;;;###autoload (autoload 'evilem-motion-forward-word-begin "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-forward-word-begin #'evil-forward-word-begin
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-forward-WORD-begin "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-forward-WORD-begin #'evil-forward-WORD-begin
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-forward-word-end "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-forward-word-end #'evil-forward-word-end
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-forward-WORD-end "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-forward-WORD-end #'evil-forward-WORD-end
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-backward-word-begin "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-backward-word-begin #'evil-backward-word-begin
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-backward-WORD-begin "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-backward-WORD-begin #'evil-backward-WORD-begin
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-backward-word-end "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-backward-word-end #'evil-backward-word-end
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-backward-WORD-end "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-backward-WORD-end #'evil-backward-WORD-end
- :scope 'line)
+ :scope 'page)
 
 ;;;###autoload (autoload 'evilem-motion-next-line "evil-easymotion" nil t)
 (evilem-make-motion
