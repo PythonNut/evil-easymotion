@@ -212,7 +212,7 @@
         ,(evilem--compute-inclusivity funcs)
         (cl-letf* ,bind
           ,(when (if push-jump-supplied? push-jump (not scope))
-             '(evil--jumps-push))
+             '(evil-set-jump))
           ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                          pre-hook
                                        `(lambda () ,pre-hook))))
