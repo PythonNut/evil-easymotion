@@ -278,7 +278,7 @@
     :scope ,scope
     :all-windows ,all-windows
     :initial-point ,initial-point
-    ,@(if push-jump-supplied? (list :push-jump push-jump) nil)
+    ,@(when push-jump-supplied? (list :push-jump push-jump))
     :collect-postprocess ,collect-postprocess
     :include-invisible ,include-invisible))
 
@@ -332,7 +332,7 @@
                     :scope ,scope
                     :all-windows ,all-windows
                     :initial-point ,initial-point
-                    ,@(if push-jump-supplied? (list :push-jump push-jump) nil)
+                    ,@(when push-jump-supplied? (list :push-jump push-jump))
                     :collect-postprocess ,collect-postprocess
                     :include-invisible ,include-invisible)))
 
