@@ -198,7 +198,7 @@
                                  scope
                                  all-windows
                                  initial-point
-                                 (push-jump nil push-jump-supplied?)
+                                 (push-jump (not scope))
                                  collect-postprocess
                                  include-invisible)
   "Automatically define an evil easymotion for `func', naming it `name'"
@@ -211,7 +211,7 @@
       (evil-without-repeat
         ,(evilem--compute-inclusivity funcs)
         (cl-letf* ,bind
-          ,(when (if push-jump-supplied? push-jump (not scope))
+          ,(when push-jump
              '(evil-set-jump))
           ,(when pre-hook `(funcall ,(if (functionp pre-hook)
                                          pre-hook
@@ -265,7 +265,7 @@
                             scope
                             all-windows
                             initial-point
-                            (push-jump nil push-jump-supplied?)
+                            (push-jump (not scope))
                             collect-postprocess
                             include-invisible)
   `(evilem-make-motion
@@ -278,7 +278,7 @@
     :scope ,scope
     :all-windows ,all-windows
     :initial-point ,initial-point
-    ,@(when push-jump-supplied? (list :push-jump push-jump))
+    :push-jump ,push-jump
     :collect-postprocess ,collect-postprocess
     :include-invisible ,include-invisible))
 
@@ -316,7 +316,7 @@
                             scope
                             all-windows
                             initial-point
-                            (push-jump nil push-jump-supplied?)
+                            (push-jump (not scope))
                             collect-postprocess
                             include-invisible)
   "Automatically create and bind an evil motion"
@@ -332,7 +332,7 @@
                     :scope ,scope
                     :all-windows ,all-windows
                     :initial-point ,initial-point
-                    ,@(when push-jump-supplied? (list :push-jump push-jump))
+                    :push-jump ,push-jump
                     :collect-postprocess ,collect-postprocess
                     :include-invisible ,include-invisible)))
 
