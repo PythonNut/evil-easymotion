@@ -134,7 +134,8 @@
             ;; make sure the motion doesn't move the window
             (scroll-conservatively 101)
             (smooth-scrolling-mode nil)
-            (scroll-margin 0))
+            (scroll-margin 0)
+            (evil-state 'normal))
     (if (functionp func)
         (avy-dowindows current-prefix-arg
           (save-excursion
@@ -184,10 +185,12 @@
 
 (eval-and-compile
   (defun evilem--compute-inclusivity (funcs)
-    (when (and (= (length funcs) 1)
-               (evil-has-command-properties-p (car funcs)))
-      `(setq evil-this-type
-             ',(evil-get-command-property (car funcs) :type)))))
+    (cond ((symbolp funcs) `(setq evil-this-type
+                                  ',(evil-get-command-property funcs :type)))
+
+          ((and (listp funcs) (= (length funcs) 1)) (evilem--compute-inclusivity (car funcs)))
+
+          ((and (listp funcs) (= (length funcs) 2) (eq (car funcs) 'function)) (evilem--compute-inclusivity (cdr funcs))))))
 
 (cl-defmacro evilem-make-motion (name
                                  funcs
