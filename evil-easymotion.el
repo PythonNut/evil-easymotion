@@ -134,7 +134,8 @@
             ;; make sure the motion doesn't move the window
             (scroll-conservatively 101)
             (smooth-scrolling-mode nil)
-            (scroll-margin 0))
+            (scroll-margin 0)
+            (evil-state 'normal))
     (if (functionp func)
         (avy-dowindows current-prefix-arg
           (save-excursion
