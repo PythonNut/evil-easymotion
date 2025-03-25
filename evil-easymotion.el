@@ -153,27 +153,66 @@
 
                 (narrow-to-region (max beg (window-start))
                                   (min end (window-end))))
-              (while (and (ignore-errors
-                            (setq this-command func
-                                  last-command func)
-                            (call-interactively func)
-                            (unless include-invisible
-                              (let ((ov (car (overlays-at (point)))))
-                                (while (and ov (member
-                                                'invisible
-                                                (overlay-properties ov)))
-                                  (goto-char (overlay-end ov))
-                                  ;; This is a bit of a hack, since we
-                                  ;; can't guarantee that we will end
-                                  ;; up at the same point if we start
-                                  ;; at the end of the invisible
-                                  ;; region vs. looping through it.
-                                  (call-interactively func)
-                                  (setq ov (car (overlays-at (point)))))))
-                            t)
-                          (setq point (cons (point) (get-buffer-window)))
-                          (not (member point points))
-                          (push point points))))))
+
+              ;; Use a robust approach to prevent infinite loops by tracking overlay interactions
+              (let ((prev-point nil)
+                    (seen-overlays (make-hash-table :test 'eq))
+                    (same-overlay-count 0)
+                    (making-progress t))
+
+                (while (and making-progress
+                            (ignore-errors
+                              (setq this-command func
+                                    last-command func)
+
+                              ;; Execute the motion command
+                              (call-interactively func)
+
+                              ;; Check if we're in an overlay
+                              (unless include-invisible
+                                (let* ((ov (car (overlays-at (point))))
+                                       (overlay-id (and ov (overlay-start ov))))
+
+                                  ;; If we're in an overlay and have seen it before
+                                  (when (and ov (gethash overlay-id seen-overlays))
+                                    ;; Calculate if we're getting closer to either edge
+                                    (let ((dist-to-start (abs (- (point) (overlay-start ov))))
+                                          (dist-to-end (abs (- (point) (overlay-end ov))))
+                                          (prev-dist-start (car (gethash overlay-id seen-overlays)))
+                                          (prev-dist-end (cdr (gethash overlay-id seen-overlays))))
+
+                                      ;; If we're getting closer to either edge, we're making progress
+                                      (let ((progress-to-edge (or (< dist-to-start prev-dist-start)
+                                                                  (< dist-to-end prev-dist-end))))
+
+                                        ;; If we're not making progress in this overlay
+                                        (unless progress-to-edge
+                                          (setq same-overlay-count (1+ same-overlay-count))
+                                          ;; After 2 tries in the same overlay without progress, skip it
+                                          (when (>= same-overlay-count 2)
+                                            (goto-char (overlay-end ov))
+                                            (call-interactively func))))))
+
+                                  ;; Record our position in this overlay for next time
+                                  (when ov
+                                    (puthash overlay-id
+                                             (cons (abs (- (point) (overlay-start ov)))
+                                                   (abs (- (point) (overlay-end ov))))
+                                             seen-overlays))))
+
+                              ;; Check if we're making progress at all (point has moved)
+                              (setq making-progress (or (not prev-point)
+                                                        (/= prev-point (point))))
+                              t)
+
+                            ;; Create the position key and check for duplicates
+                            (setq point (cons (point) (get-buffer-window)))
+                            (not (member point points)))
+
+                  ;; Record this position
+                  (push point points)
+                  (setq prev-point (point)))))))
+
       (setq points (cl-remove-duplicates
                     (cl-mapcan (lambda (f)
                                  (evilem--collect f scope all-windows))
