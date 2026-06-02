@@ -357,12 +357,14 @@
 ;;;###autoload (autoload 'evilem-motion-forward-word-end "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-forward-word-end #'evil-forward-word-end
- :scope 'line)
+ :scope 'line
+ :bind ((evil-state 'normal)))
 
 ;;;###autoload (autoload 'evilem-motion-forward-WORD-end "evil-easymotion" nil t)
 (evilem-make-motion
  evilem-motion-forward-WORD-end #'evil-forward-WORD-end
- :scope 'line)
+ :scope 'line
+ :bind ((evil-state 'normal)))
 
 ;;;###autoload (autoload 'evilem-motion-backward-word-begin "evil-easymotion" nil t)
 (evilem-make-motion

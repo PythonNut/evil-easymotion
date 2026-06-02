@@ -42,6 +42,26 @@
             '(evilem-make-motion evilem-test-motion
                #'evil-forward-word-begin)))))
 
+(ert-deftest evilem-motion-forward-word-end-continues-in-operator-state ()
+  (let ((evil-was-enabled evil-mode))
+    (unwind-protect
+        (progn
+          (evil-mode 1)
+          (save-window-excursion
+            (with-temp-buffer
+              (switch-to-buffer (current-buffer))
+              (insert "this is a word")
+              (goto-char (point-min))
+              (let (points
+                    (evil-state 'operator))
+                (cl-letf (((symbol-function #'evilem--jump)
+                           (lambda (collected-points)
+                             (setq points collected-points))))
+                  (evilem-motion-forward-word-end))
+                (should (equal (mapcar #'car points) '(4 7 9 14)))))))
+      (unless evil-was-enabled
+        (evil-mode -1)))))
+
 (ert-deftest evilem-collect-skips-invisible-overlays-backward ()
   (save-window-excursion
     (with-temp-buffer
