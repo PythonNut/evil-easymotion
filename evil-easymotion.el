@@ -58,10 +58,25 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'ring)
 
 (eval-when-compile
   (require 'avy)
   (require 'evil))
+
+(declare-function avy-action-copy "avy")
+(declare-function avy-action-kill-move "avy")
+(declare-function avy-action-kill-stay "avy")
+(declare-function avy-action-mark "avy")
+(declare-function avy-action-teleport "avy")
+(declare-function avy-action-yank "avy")
+(declare-function avy-action-yank-line "avy")
+(declare-function evil-delete-whole-line "evil-commands")
+(declare-function evil-expand "evil-common")
+(declare-function evil-range-beginning "evil-common")
+(declare-function evil-range-end "evil-common")
+(declare-function evil-yank-line "evil-commands")
+(defvar avy-ring)
 
 (defgroup evilem nil
   "Emulate vim-easymotion"
@@ -118,6 +133,88 @@
           (if (equal (selected-window) (cdr pt))
               (abs (- (point) (car pt)))
             most-positive-fixnum))))
+
+(defun evilem--line-range-at (pt)
+  "Return the Evil line range containing PT."
+  (save-excursion
+    (goto-char pt)
+    (evil-expand pt pt 'line)))
+
+(defun evilem--avy-action-mark-line (pt)
+  "Mark the line containing PT."
+  (let ((range (evilem--line-range-at pt)))
+    (goto-char (evil-range-beginning range))
+    (set-mark (point))
+    (goto-char (evil-range-end range))))
+
+(defun evilem--avy-action-copy-line (pt)
+  "Copy the line containing PT."
+  (save-excursion
+    (goto-char pt)
+    (call-interactively #'evil-yank-line)
+    (message "Copied: %s" (current-kill 0)))
+  (let ((dat (ring-ref avy-ring 0)))
+    (select-frame-set-input-focus
+     (window-frame (cdr dat)))
+    (select-window (cdr dat))
+    (goto-char (car dat))))
+
+(defun evilem--avy-action-yank-line (pt)
+  "Yank the line containing PT at point."
+  (evilem--avy-action-copy-line pt)
+  (yank)
+  t)
+
+(defun evilem--avy-action-kill-move-line (pt)
+  "Kill the line containing PT and move there."
+  (goto-char pt)
+  (call-interactively #'evil-delete-whole-line)
+  (message "Killed: %s" (current-kill 0))
+  (point))
+
+(defun evilem--avy-action-kill-stay-line (pt)
+  "Kill the line containing PT."
+  (save-excursion
+    (goto-char pt)
+    (call-interactively #'evil-delete-whole-line))
+  (message "Killed: %s" (current-kill 0))
+  (select-window
+   (cdr
+    (ring-ref avy-ring 0)))
+  t)
+
+(defun evilem--avy-action-teleport-line (pt)
+  "Kill the line containing PT and yank it at point."
+  (evilem--avy-action-kill-stay-line pt)
+  (select-window
+   (cdr
+    (ring-ref avy-ring 0)))
+  (save-excursion
+    (yank))
+  t)
+
+(defmacro evilem--make-line-motion (name motion visual)
+  "Define NAME as a line motion using MOTION.
+When VISUAL is non-nil, move by visual lines."
+  `(evilem-make-motion
+    ,name ,motion
+    :pre-hook (setq evil-this-type 'line)
+    :bind ((temporary-goal-column (current-column))
+           (line-move-visual ,visual)
+           ((symbol-function #'avy-action-mark)
+            #'evilem--avy-action-mark-line)
+           ((symbol-function #'avy-action-copy)
+            #'evilem--avy-action-copy-line)
+           ((symbol-function #'avy-action-yank)
+            #'evilem--avy-action-yank-line)
+           ((symbol-function #'avy-action-yank-line)
+            #'evilem--avy-action-yank-line)
+           ((symbol-function #'avy-action-kill-move)
+            #'evilem--avy-action-kill-move-line)
+           ((symbol-function #'avy-action-kill-stay)
+            #'evilem--avy-action-kill-stay-line)
+           ((symbol-function #'avy-action-teleport)
+            #'evilem--avy-action-teleport-line))))
 
 ;;;###autoload
 (defun evilem--collect (func &optional
@@ -387,32 +484,16 @@
  :scope 'line)
 
 ;;;###autoload (autoload 'evilem-motion-next-line "evil-easymotion" nil t)
-(evilem-make-motion
- evilem-motion-next-line #'next-line
- :pre-hook (setq evil-this-type 'line)
- :bind ((temporary-goal-column (current-column))
-        (line-move-visual nil)))
+(evilem--make-line-motion evilem-motion-next-line #'next-line nil)
 
 ;;;###autoload (autoload 'evilem-motion-previous-line "evil-easymotion" nil t)
-(evilem-make-motion
- evilem-motion-previous-line #'previous-line
- :pre-hook (setq evil-this-type 'line)
- :bind ((temporary-goal-column (current-column))
-        (line-move-visual nil)))
+(evilem--make-line-motion evilem-motion-previous-line #'previous-line nil)
 
 ;;;###autoload (autoload 'evilem-motion-next-visual-line "evil-easymotion" nil t)
-(evilem-make-motion
- evilem-motion-next-visual-line #'next-line
- :pre-hook (setq evil-this-type 'line)
- :bind ((temporary-goal-column (current-column))
-        (line-move-visual t)))
+(evilem--make-line-motion evilem-motion-next-visual-line #'next-line t)
 
 ;;;###autoload (autoload 'evilem-motion-previous-visual-line "evil-easymotion" nil t)
-(evilem-make-motion
- evilem-motion-previous-visual-line #'previous-line
- :pre-hook (setq evil-this-type 'line)
- :bind ((temporary-goal-column (current-column))
-        (line-move-visual t)))
+(evilem--make-line-motion evilem-motion-previous-visual-line #'previous-line t)
 
 ;;;###autoload (autoload 'evilem-motion-find-char-to "evil-easymotion" nil t)
 (evilem-make-motion

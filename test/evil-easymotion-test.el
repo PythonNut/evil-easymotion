@@ -62,6 +62,62 @@
       (unless evil-was-enabled
         (evil-mode -1)))))
 
+(defun evilem-test--line-action-result (action result-fn)
+  (save-window-excursion
+    (with-temp-buffer
+      (switch-to-buffer (current-buffer))
+      (insert "alpha zero\nline two\n")
+      (goto-char (point-min))
+      (move-to-column 3)
+      (let ((avy-ring (make-ring 20))
+            (kill-ring nil)
+            kill-ring-yank-pointer
+            result)
+        (cl-letf (((symbol-function #'avy--process)
+                   (lambda (_points _style-fn)
+                     (ring-insert avy-ring (cons (point) (selected-window)))
+                     (funcall action
+                              (save-excursion
+                                (forward-line 1)
+                                (move-to-column 3)
+                                (point)))
+                     (setq result (funcall result-fn)))))
+          (evilem-motion-next-line))
+        result))))
+
+(ert-deftest evilem-line-motion-actions-use-whole-line ()
+  (save-window-excursion
+    (dolist (action '(avy-action-copy
+                      avy-action-kill-move
+                      avy-action-kill-stay
+                      avy-action-teleport))
+      (should (equal (evilem-test--line-action-result
+                      action
+                      (lambda ()
+                        (substring-no-properties (current-kill 0 t))))
+                     "line two\n")))
+    (dolist (action '(avy-action-kill-move
+                      avy-action-kill-stay))
+      (should (equal (evilem-test--line-action-result
+                      action
+                      #'buffer-string)
+                     "alpha zero\n")))
+    (dolist (action '(avy-action-yank
+                      avy-action-yank-line))
+      (should (equal (evilem-test--line-action-result
+                      action
+                      #'buffer-string)
+                     "alpline two\nha zero\nline two\n")))
+    (should (equal (evilem-test--line-action-result
+                    #'avy-action-teleport
+                    #'buffer-string)
+                   "alpline two\nha zero\n"))
+    (should (equal (evilem-test--line-action-result
+                    #'avy-action-mark
+                    (lambda ()
+                      (buffer-substring (mark) (point))))
+                   "line two\n"))))
+
 (ert-deftest evilem-collect-skips-invisible-overlays-backward ()
   (save-window-excursion
     (with-temp-buffer
