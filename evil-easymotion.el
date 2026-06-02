@@ -156,20 +156,24 @@
               (while (and (ignore-errors
                             (setq this-command func
                                   last-command func)
-                            (call-interactively func)
-                            (unless include-invisible
-                              (let ((ov (car (overlays-at (point)))))
-                                (while (and ov (member
-                                                'invisible
-                                                (overlay-properties ov)))
-                                  (goto-char (overlay-end ov))
-                                  ;; This is a bit of a hack, since we
-                                  ;; can't guarantee that we will end
-                                  ;; up at the same point if we start
-                                  ;; at the end of the invisible
-                                  ;; region vs. looping through it.
-                                  (call-interactively func)
-                                  (setq ov (car (overlays-at (point)))))))
+                            (let ((old-point (point)))
+                              (call-interactively func)
+                              (unless include-invisible
+                                (let ((skip-to (if (< (point) old-point)
+                                                   #'overlay-start
+                                                 #'overlay-end))
+                                      (ov (car (overlays-at (point)))))
+                                  (while (and ov (member
+                                                  'invisible
+                                                  (overlay-properties ov)))
+                                    (goto-char (funcall skip-to ov))
+                                    ;; This is a bit of a hack, since we
+                                    ;; can't guarantee that we will end
+                                    ;; up at the same point if we start
+                                    ;; at the edge of the invisible
+                                    ;; region vs. looping through it.
+                                    (call-interactively func)
+                                    (setq ov (car (overlays-at (point))))))))
                             t)
                           (setq point (cons (point) (get-buffer-window)))
                           (not (member point points))
