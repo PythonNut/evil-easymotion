@@ -188,10 +188,14 @@
 
 (eval-and-compile
   (defun evilem--compute-inclusivity (funcs)
-    (when (and (= (length funcs) 1)
-               (evil-has-command-properties-p (car funcs)))
-      `(setq evil-this-type
-             ',(evil-get-command-property (car funcs) :type)))))
+    (let ((func (evilem--unquote funcs)))
+      (when (and (consp func)
+                 (= (length func) 1))
+        (setq func (evilem--unquote (car func))))
+      (when (and (symbolp func)
+                 (evil-has-command-properties-p func))
+        `(setq evil-this-type
+               ',(evil-get-command-property func :type))))))
 
 (cl-defmacro evilem-make-motion (name
                                  funcs

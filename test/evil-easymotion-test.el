@@ -22,6 +22,26 @@
   (search-forward "a")
   (goto-char (match-beginning 0)))
 
+(defun evilem-test--tree-contains-p (needle tree)
+  (or (equal needle tree)
+      (and (consp tree)
+           (or (evilem-test--tree-contains-p needle (car tree))
+               (evilem-test--tree-contains-p needle (cdr tree))))))
+
+(ert-deftest evilem-make-motion-sets-inclusive-type-for-function-quoted-motion ()
+  (should (evilem-test--tree-contains-p
+           '(setq evil-this-type 'inclusive)
+           (macroexpand-1
+            '(evilem-make-motion evilem-test-motion
+               #'evil-forward-word-end)))))
+
+(ert-deftest evilem-make-motion-sets-exclusive-type-for-function-quoted-motion ()
+  (should (evilem-test--tree-contains-p
+           '(setq evil-this-type 'exclusive)
+           (macroexpand-1
+            '(evilem-make-motion evilem-test-motion
+               #'evil-forward-word-begin)))))
+
 (ert-deftest evilem-collect-skips-invisible-overlays-backward ()
   (save-window-excursion
     (with-temp-buffer
